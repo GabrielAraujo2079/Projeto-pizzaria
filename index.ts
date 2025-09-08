@@ -1,9 +1,10 @@
 import * as fs from "fs";
 const input = require("prompt-sync")();
+import * as bcrypt from "bcrypt";   
 
 const arquivo = "usuarios.json";
 
-// Verifica se o arquivo JSON existe, se não cria um vazio
+// Verifica se o arquivo JSON existe, caso não, cria automaticamente um vazio
 if (!fs.existsSync(arquivo)) {
     fs.writeFileSync(arquivo, "[]");
 }
@@ -37,9 +38,11 @@ while (true) {
                 console.log("Usuário já existe!");
                 break;
             }
+            //Salva a senha como hash (10 e o numero de vez que ele vai embaralhar)
+            const senhaHash = bcrypt.hashSync(senha, 10);
 
             // Puxa todas as informações e salva em JSON
-            usuarios.push({nome, senha, cpf, email, dataNascmto: dataNascimento.toISOString().split("T")[0]
+            usuarios.push({nome, senha: senhaHash, cpf, email, dataNascmto: dataNascimento.toISOString().split("T")[0]
             });
             fs.writeFileSync(arquivo, JSON.stringify(usuarios, null, 4));
             console.log("Usuário cadastrado com sucesso!");
@@ -49,19 +52,20 @@ while (true) {
             // Login
             let emailLogin: string = input("Email: ");
             let senhaLogin: string = input("Senha: ");
-            //Confirma se a conta do usuario existe, to lower case foi usado pois o typescript e case sensitive
-            let user = usuarios.find((u: any) => u.email === emailLogin.toLowerCase() && u.senha.toLowerCase() === senhaLogin);
+            //Confirma se a conta do usuario existe, to LowerCase foi usado pois o TypeScript e case sensitive
+            let user = usuarios.find((u: any) => u.email.toLowerCase() === emailLogin.toLowerCase());
+            
             //menu de boas vindas
-            if (user) {
+            if (user && bcrypt.compareSync(senhaLogin, user.senha)) {
                 console.log(`Bem-vindo, ${user.nome}!`);
             } else {
-                console.log("Usuário ou senha incorretos!");
+            console.log("Usuário ou senha incorretos!");
             }
             break;
-
         case "3":
             console.log("Saindo...");
             process.exit(0);
+
 
         default:
             console.log("Opção inválida!");

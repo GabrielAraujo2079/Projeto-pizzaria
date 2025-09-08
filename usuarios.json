@@ -5,5 +5,12 @@
         "cpf": "55566677789",
         "email": "gabriel@gamil.com",
         "dataNascmto": "23/01/2007"
+    },
+    {
+        "nome": "gab",
+        "senha": "$2b$10$K5UYFp5UFIX1Lv9/4mdm3.YuCkNi8gjRF3RpTtruWsOGcHMllHZ1O",
+        "cpf": "123",
+        "email": "123",
+        "dataNascmto": "2007-01-23"
     }
 ]

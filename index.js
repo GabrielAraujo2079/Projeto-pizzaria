@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs = require("fs");
 var input = require("prompt-sync")();
+var bcrypt = require("bcrypt");
 var arquivo = "usuarios.json";
-// Verifica se o arquivo JSON existe, se não cria um vazio
+// Verifica se o arquivo JSON existe, caso não, cria automaticamente um vazio
 if (!fs.existsSync(arquivo)) {
     fs.writeFileSync(arquivo, "[]");
 }
@@ -31,23 +32,21 @@ var _loop_1 = function () {
                 console.log("Usuário já existe!");
                 break;
             }
+            //Salva a senha como hash (10 e o numero de vez que ele vai embaralhar)
+            var senhaHash = bcrypt.hashSync(senha, 10);
             // Puxa todas as informações e salva em JSON
-            usuarios.push({
-                nome: nome,
-                senha: senha,
-                cpf: cpf_1,
-                email: email,
-                dataNascmto: dataNascimento.toISOString().split("T")[0]
-            });
+            usuarios.push({ nome: nome, senha: senhaHash, cpf: cpf_1, email: email, dataNascmto: dataNascimento.toISOString().split("T")[0] });
             fs.writeFileSync(arquivo, JSON.stringify(usuarios, null, 4));
             console.log("Usuário cadastrado com sucesso!");
             break;
         case "2":
             // Login
             var emailLogin_1 = input("Email: ");
-            var senhaLogin_1 = input("Senha: ");
-            var user = usuarios.find(function (u) { return u.email === emailLogin_1 && u.senha === senhaLogin_1; });
-            if (user) {
+            var senhaLogin = input("Senha: ");
+            //Confirma se a conta do usuario existe, to LowerCase foi usado pois o TypeScript e case sensitive
+            var user = usuarios.find(function (u) { return u.email.toLowerCase() === emailLogin_1.toLowerCase(); });
+            //menu de boas vindas
+            if (user && bcrypt.compareSync(senhaLogin, user.senha)) {
                 console.log("Bem-vindo, ".concat(user.nome, "!"));
             }
             else {
