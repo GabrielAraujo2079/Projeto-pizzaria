@@ -1,0 +1,10 @@
+=== RELATÓRIO DE VENDAS ===
+
+📅 Vendas por dia:
+   17/09/2025: 4 produtos vendidos | R$ 98.00
+   19/09/2025: 5 produtos vendidos | R$ 156.00
+
+🗓 Vendas por mês:
+   09/2025: 9 produtos vendidos | R$ 254.00
+
+🔢 Total geral (todas entradas): 9 produtos vendidos | R$ 254.00

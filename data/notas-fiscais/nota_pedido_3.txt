@@ -1,0 +1,18 @@
+=== NOTA FISCAL / COMPROVANTE ===
+Pedido #: 3
+Cliente: D
+Email: D@
+Telefone: 1194
+Data/Hora: 19/09/2025, 14:17:16
+Forma de pagamento: DEBITO
+
+Tipo: RETIRADA
+
+Itens:
+   3x Pizza Mussarela - R$ 105.00
+   1x Pizza Calabresa - R$ 39.00
+   1x Refrigerante Coca-Cola 2L - R$ 12.00
+
+💰 Total: R$ 156.00
+──────────────────────────────────────────────────
+Obrigado pela preferência!

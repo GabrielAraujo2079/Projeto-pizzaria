@@ -1,0 +1,18 @@
+=== NOTA FISCAL / COMPROVANTE ===
+Pedido #: 2
+Cliente: D2
+Email: D2@
+Telefone: 1193
+Data/Hora: 17/09/2025, 10:15:37
+Forma de pagamento: PIX
+
+Tipo: ENTREGA
+Endereço de entrega: Rua2, 244 - Vila velha
+
+Itens:
+   1x Pizza Mussarela - R$ 35.00
+   1x Refrigerante Coca-Cola 2L - R$ 12.00
+
+💰 Total: R$ 47.00
+──────────────────────────────────────────────────
+Obrigado pela preferência!

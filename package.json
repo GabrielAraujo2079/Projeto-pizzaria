@@ -1,0 +1,41 @@
+{
+  "name": "typescriptunianchieta",
+  "version": "1.0.0",
+  "description": "Sistema de Pizzaria com cadastro, login e CRUD de produtos - P1 do Prof Edu",
+  "main": "dist/pizzaria.js",
+  "author": "Gabriel Araujo",
+  "license": "ISC",
+  "keywords": [
+    "pizzaria",
+    "typescript",
+    "crud",
+    "sistema"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "clean-data": "rm -rf data",
+    "build": "npm run clean && tsc",
+    "dev": "ts-node src/pizzaria.ts",
+    "start": "node dist/pizzaria.js",
+    "watch": "tsc --watch",
+    "dev-watch": "nodemon --exec ts-node src/pizzaria.ts",
+    "backup-data": "cp -r data data_backup_$(date +%Y%m%d_%H%M%S) 2>/dev/null || echo 'Pasta data não existe ainda'",
+    "init-data": "mkdir -p data && echo '[]' > data/usuarios.json && echo '[]' > data/produtos.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "prompt-sync": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/node": "^22.18.4",
+    "@types/prompt-sync": "^4.2.3",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

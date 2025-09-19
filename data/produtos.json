@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "nome": "Pizza Calabresa",
+        "descricao": "Pizza com recheio de calabresa e cebola ",
+        "preco": 39,
+        "categoria": "pizza",
+        "disponivel": true
+    },
+    {
+        "id": 2,
+        "nome": "Pizza Mussarela",
+        "descricao": "Pizza com recheio de mussarela e tomate",
+        "preco": 35,
+        "categoria": "pizza",
+        "disponivel": true
+    },
+    {
+        "id": 3,
+        "nome": "Refrigerante Coca-Cola 2L",
+        "descricao": "Refrigerante Coca-Cola de 2 litros",
+        "preco": 12,
+        "categoria": "bebida",
+        "disponivel": true
+    }
+]
