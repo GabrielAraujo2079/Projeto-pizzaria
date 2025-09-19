@@ -37,17 +37,13 @@ Salva lista de usuários.
 
 Datas ficam em formato americano (YYYY-MM-DD).
 
-Tratamento de Erros
-
-Se algo quebrar no main, mostra erro no terminal e fecha com process.exit(1).
-
 * Extras do Projeto
 
 Transpilação de TypeScript pra JavaScript.
 
 Execução multiplataforma:
 
-.bat → feito pra rodar no domínio da faculdade sem precisar digitar comando.
+.bat → feito pra rodar no domínio da faculdade.
 
 .exe → versão standalone pra quem não tem Node instalado.
 
