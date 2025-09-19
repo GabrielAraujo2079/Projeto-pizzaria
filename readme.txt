@@ -1,49 +1,80 @@
-# Projeto Pizzaria P1 do Prof Edu
+📂 Estrutura do Projeto
+📂 data
 
-👥 Integrantes:
+Contém os dados e relatórios.
 
-Gabriel Araujo Santos (2508678)
-Leonardo da Graça Moraes (2512238)
-Paulo André Silva de Lima (251263)
-Paulo Vitor Macieira Carvalho (2508725)
+notas-fiscais/ → Notas fiscais dos pedidos.
 
-🧾 Tecnologias & Bibliotecas
-fs (File System) → leitura/escrita de arquivos (usado pra salvar cadastros no .json).
-prompt-sync → leitura de dados no terminal, simulando entrada de usuário.
-bcrypt → gera hash seguro de senha antes de salvar.
+Relatorio setembro/ → Relatórios de vendas.
 
-* Estrutura do Código
-MenuController → é o “cérebro” do app. Gerencia o fluxo do menu, chamando cadastro, login e outras funções.
+pedidos.json → Histórico de pedidos.
 
-Cadastro
+produtos.json → Cadastro de produtos.
 
-Pega nome, email, senha.
+usuarios.json → Lista de usuários cadastrados.
 
-Senha é transformada em hash usando bcrypt.
+📂 dist
 
-Salva tudo como string no banco JSON.
+Arquivos compilados de TypeScript para JavaScript.
 
-Login
+📂 node_modules
 
-Lê dados do JSON.
+Dependências instaladas via npm.
 
-Compara a senha digitada com o hash salvo.
+📂 src (Código-Fonte)
 
-Dá acesso só se bater.
+controllers/ → Controla fluxo do sistema.
 
-Banco de Dados (JSON)
+AdminControllers.ts → Funções administrativas.
 
-Salva lista de usuários.
+ClienteControllers.ts → Lógica do cliente.
 
-Datas ficam em formato americano (YYYY-MM-DD).
+MenuControllers.ts → Cardápio e navegação.
 
-* Extras do Projeto
+models/ → Modelos de dados (User, Produto, Pedido).
 
-Transpilação de TypeScript pra JavaScript.
+services/ → Regras de negócio.
 
-Execução multiplataforma:
+DataServices.ts, Pedido.ts, Produto.ts, Usuario.ts.
 
-.bat → feito pra rodar no domínio da faculdade.
+utils/ → Funções auxiliares.
 
-.exe → versão standalone pra quem não tem Node instalado.
+FileUtils.ts, promptUtils.ts, validators.ts.
 
+main.ts → Ponto de entrada do sistema.
+
+📂 raiz do projeto
+
+package.json → Dependências e scripts.
+
+package-lock.json → Versões exatas das libs.
+
+PizzariaEdu.exe → Versão executável para Windows.
+
+PizzariaEduEmBat.bat → Versão batch (roda na faculdade).
+
+readme.txt → Instruções antigas.
+
+tsconfig.json → Configuração do compilador TypeScript.
+
+🛠️ Extras & Decisões
+
+Projeto foi transpilado de TS para JS para compatibilidade.
+
+Tem versão .bat (para rodar no domínio da faculdade) e versão .exe (não precisa Node).
+
+package.json serve como nosso “requirements.txt” — cada integrante deve colocar seu nome lá.
+
+💡 Recomendações de Comentários no Código
+
+Explicar bem o MenuController e o que cada opção faz.
+
+Documentar funções de cadastro/login (principalmente uso de hash).
+
+Avisar no código que hash é irreversível (pra lembrar que não tem como recuperar senha).
+
+Deixar observação onde as datas estão sendo tratadas.
+
+Comentar funções de manipulação de arquivos (salvar/ler) pra facilitar manutenção.
+
+Marcar no código pontos futuros de melhoria (ex: formatar datas pro padrão BR).
