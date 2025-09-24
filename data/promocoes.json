@@ -1,0 +1,81 @@
+[
+    {
+        "id": 1,
+        "nome": "Segunda Especial - Pizza Grande",
+        "descricao": "30% de desconto em todas as pizzas grandes",
+        "tipoDesconto": "percentual",
+        "valorDesconto": 30,
+        "diaSemana": 1,
+        "categoriaAplicavel": "pizza",
+        "ativa": true,
+        "dataInicio": "2025-09-23T22:26:57.957Z"
+    },
+    {
+        "id": 2,
+        "nome": "Terça das Bebidas",
+        "descricao": "R$ 5,00 de desconto em bebidas",
+        "tipoDesconto": "valor_fixo",
+        "valorDesconto": 5,
+        "diaSemana": 2,
+        "categoriaAplicavel": "bebida",
+        "ativa": true,
+        "dataInicio": "2025-09-23T22:26:57.971Z"
+    },
+    {
+        "id": 3,
+        "nome": "Quarta Doce",
+        "descricao": "25% off em sobremesas",
+        "tipoDesconto": "percentual",
+        "valorDesconto": 25,
+        "diaSemana": 3,
+        "categoriaAplicavel": "sobremesa",
+        "ativa": true,
+        "dataInicio": "2025-09-23T22:26:57.971Z"
+    },
+    {
+        "id": 4,
+        "nome": "Quinta da Família",
+        "descricao": "20% em pedidos acima de R$ 50",
+        "tipoDesconto": "percentual",
+        "valorDesconto": 20,
+        "diaSemana": 4,
+        "categoriaAplicavel": "todos",
+        "valorMinimoPedido": 50,
+        "ativa": true,
+        "dataInicio": "2025-09-23T22:26:57.971Z"
+    },
+    {
+        "id": 5,
+        "nome": "Sexta Premium",
+        "descricao": "15% em todo o pedido",
+        "tipoDesconto": "percentual",
+        "valorDesconto": 15,
+        "diaSemana": 5,
+        "categoriaAplicavel": "todos",
+        "ativa": true,
+        "dataInicio": "2025-09-23T22:26:57.971Z"
+    },
+    {
+        "id": 6,
+        "nome": "Sábado da Pizza",
+        "descricao": "R$ 10,00 off em pizzas",
+        "tipoDesconto": "valor_fixo",
+        "valorDesconto": 10,
+        "diaSemana": 6,
+        "categoriaAplicavel": "pizza",
+        "ativa": true,
+        "dataInicio": "2025-09-23T22:26:57.971Z"
+    },
+    {
+        "id": 7,
+        "nome": "Domingo em Família",
+        "descricao": "25% em pedidos acima de R$ 80",
+        "tipoDesconto": "percentual",
+        "valorDesconto": 25,
+        "diaSemana": 0,
+        "categoriaAplicavel": "todos",
+        "valorMinimoPedido": 80,
+        "ativa": true,
+        "dataInicio": "2025-09-23T22:26:57.971Z"
+    }
+]

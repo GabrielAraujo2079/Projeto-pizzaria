@@ -1,0 +1,89 @@
+[
+    {
+        "nome": "Paulo",
+        "senha": "$2b$10$nqHaveLUcqh85wko0Jtqxe3qarN657kgFEjDbvBklmkvE93QcI3hC",
+        "cpf": "777777777777",
+        "email": "Paulo@gmail.com",
+        "tipo": "admin",
+        "dataNascmto": "2005-03-26"
+    },
+    {
+        "nome": "D",
+        "senha": "$2b$10$0.oRespSwIXOZstOG9e96OA1EsE25jmTOGJKsJJFJQoT7PMzrWZrK",
+        "cpf": "70000000",
+        "email": "d@",
+        "telefone": "1193",
+        "tipo": "cliente",
+        "dataNascmto": "2005-03-26"
+    },
+    {
+        "nome": "D2",
+        "senha": "$2b$10$3zVwzC5eBxNTUuacnNiPfOA4XmX7uiPux9YRlv5IOezvevkSwZHFm",
+        "cpf": "7000000",
+        "email": "D2@",
+        "telefone": "1193",
+        "endereco": {
+            "rua": "Rua2",
+            "numero": "244",
+            "bairro": "Vila velha"
+        },
+        "tipo": "cliente",
+        "dataNascmto": "2005-03-26"
+    },
+    {
+        "nome": "Paulo",
+        "senha": "$2b$10$U3wZ4/39IaInb6qF2vW5BeHtTtozMYs17L3pNRmvK9dyrS5d25yKO",
+        "cpf": "1",
+        "email": "P@gmail.com",
+        "telefone": "1193",
+        "endereco": {
+            "rua": "rua",
+            "numero": "1",
+            "bairro": "2"
+        },
+        "tipo": "cliente",
+        "dataNascmto": "2005-03-24"
+    },
+    {
+        "nome": "P",
+        "senha": "$2b$10$VNFjpfh.jPQjt4sjgUXdFeQMf1LKwup4dVPxhVFMFMKp7xn8OEHBy",
+        "cpf": "12345678911",
+        "email": "P@gmail.com",
+        "telefone": "11933818223",
+        "endereco": {
+            "rua": "1",
+            "numero": "777",
+            "bairro": "2"
+        },
+        "tipo": "cliente",
+        "dataNascmto": "26/03/2005"
+    },
+    {
+        "nome": "Pr",
+        "senha": "$2b$10$KyLq4gWR8KnV6B7WcU8HFuAsbclPRChfq44l2JiD16zxw0Li7yGoG",
+        "cpf": "12245678911",
+        "email": "Pr@gmail.com",
+        "telefone": "11954818223",
+        "endereco": {
+            "rua": "2",
+            "numero": "3",
+            "bairro": "1"
+        },
+        "tipo": "cliente",
+        "dataNascmto": "26/03/2005"
+    },
+    {
+        "nome": "pt",
+        "senha": "$2b$10$stT7Aa1f3inysrLltsyIj.szWtlrBeq36lBfRNtQelIUBGkIkthwu",
+        "cpf": "13131313133",
+        "email": "pt@gmail.com",
+        "telefone": "1313131313",
+        "endereco": {
+            "rua": "1",
+            "numero": "3",
+            "bairro": "13"
+        },
+        "tipo": "cliente",
+        "dataNascmto": "26/03/2005"
+    }
+]
