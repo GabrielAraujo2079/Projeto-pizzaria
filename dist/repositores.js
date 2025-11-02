@@ -1,22 +1,55 @@
-import { Database } from './database';
-import { Usuario, Produto, Pedido, ItemPedido, Promocao, Endereco } from './models';
-import * as bcrypt from 'bcrypt';
-
-export class UsuarioRepository {
-    constructor(private db: Database) {}
-
-    async findAll(): Promise<Usuario[]> {
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PromocaoRepository = exports.PedidoRepository = exports.ProdutoRepository = exports.UsuarioRepository = void 0;
+const models_1 = require("./models");
+const bcrypt = __importStar(require("bcrypt"));
+class UsuarioRepository {
+    constructor(db) {
+        this.db = db;
+    }
+    async findAll() {
         const result = await this.db.query(`
             SELECT u.id_cliente AS id, u.nome, u.senha, u.cpf, u.email, u.tipo, u.data_nascimento, u.telefone, u.criado_em, u.atualizado_em,
                    e.logradouro AS rua, e.numero, e.bairro, e.complemento, e.cidade, e.estado, e.cep, e.id_endereco AS endereco_id
             FROM usuarios u
             LEFT JOIN enderecos e ON e.usuario_id = u.id_cliente
         `);
-
-        return result.rows.map((row: any) => this.mapRowToUsuario(row));
+        return result.rows.map((row) => this.mapRowToUsuario(row));
     }
-
-    async findById(id: number): Promise<Usuario | null> {
+    async findById(id) {
         const result = await this.db.query(`
             SELECT u.id_cliente AS id, u.nome, u.senha, u.cpf, u.email, u.tipo, u.data_nascimento, u.telefone, u.criado_em, u.atualizado_em,
                    e.logradouro AS rua, e.numero, e.bairro, e.complemento, e.cidade, e.estado, e.cep, e.id_endereco AS endereco_id
@@ -24,11 +57,9 @@ export class UsuarioRepository {
             LEFT JOIN enderecos e ON e.usuario_id = u.id_cliente
             WHERE u.id_cliente = $1
         `, [id]);
-
         return result.rows.length > 0 ? this.mapRowToUsuario(result.rows[0]) : null;
     }
-
-    async findByEmail(email: string): Promise<Usuario | null> {
+    async findByEmail(email) {
         const result = await this.db.query(`
             SELECT u.id_cliente AS id, u.nome, u.senha, u.cpf, u.email, u.tipo, u.data_nascimento, u.telefone, u.criado_em, u.atualizado_em,
                    e.logradouro AS rua, e.numero, e.bairro, e.complemento, e.cidade, e.estado, e.cep, e.id_endereco AS endereco_id
@@ -36,11 +67,9 @@ export class UsuarioRepository {
             LEFT JOIN enderecos e ON e.usuario_id = u.id_cliente
             WHERE u.email = $1
         `, [email]);
-
         return result.rows.length > 0 ? this.mapRowToUsuario(result.rows[0]) : null;
     }
-
-    async findByCpf(cpf: string): Promise<Usuario | null> {
+    async findByCpf(cpf) {
         const result = await this.db.query(`
             SELECT u.id_cliente AS id, u.nome, u.senha, u.cpf, u.email, u.tipo, u.data_nascimento, u.telefone, u.criado_em, u.atualizado_em,
                    e.logradouro AS rua, e.numero, e.bairro, e.complemento, e.cidade, e.estado, e.cep, e.id_endereco AS endereco_id
@@ -48,29 +77,21 @@ export class UsuarioRepository {
             LEFT JOIN enderecos e ON e.usuario_id = u.id_cliente
             WHERE u.cpf = $1
         `, [cpf]);
-
         return result.rows.length > 0 ? this.mapRowToUsuario(result.rows[0]) : null;
     }
-
-    async autenticar(email: string, senha: string): Promise<Usuario | null> {
+    async autenticar(email, senha) {
         const usuario = await this.findByEmail(email);
-        
         if (!usuario || !bcrypt.compareSync(senha, usuario.senha)) {
             return null;
         }
-
         return usuario;
     }
-
-    async create(usuario: Usuario): Promise<Usuario> {
+    async create(usuario) {
         const client = await this.db.getClient();
-        
         try {
             await client.query('BEGIN');
-
             // Hash da senha
             const senhaHash = bcrypt.hashSync(usuario.senha, 10);
-
             // Criar usuário primeiro (endereços referenciam usuario_id)
             const result = await client.query(`
                 INSERT INTO usuarios (nome, senha, cpf, email, tipo, data_nascimento, telefone)
@@ -85,11 +106,9 @@ export class UsuarioRepository {
                 usuario.dataNascimento,
                 usuario.telefone
             ]);
-
             const novoId = result.rows[0].id_cliente;
-
             // Criar endereço ligado ao usuário (se fornecido)
-            let enderecoId: number | null = null;
+            let enderecoId = null;
             if (usuario.endereco) {
                 const enderecoResult = await client.query(`
                     INSERT INTO enderecos (usuario_id, logradouro, numero, bairro, complemento, cidade, estado, cep, principal)
@@ -108,31 +127,27 @@ export class UsuarioRepository {
                 ]);
                 enderecoId = enderecoResult.rows[0].id_endereco;
             }
-
             await client.query('COMMIT');
-
             // Recarregar usuário com dados completos
             const usuarioCriado = await this.findById(novoId);
             if (usuarioCriado && enderecoId && usuario.endereco) {
                 usuarioCriado.endereco = usuario.endereco;
                 usuarioCriado.endereco.id = enderecoId;
             }
-
-            return usuarioCriado as Usuario;
-        } catch (error) {
+            return usuarioCriado;
+        }
+        catch (error) {
             await client.query('ROLLBACK');
             throw error;
-        } finally {
+        }
+        finally {
             client.release();
         }
     }
-
-    async update(id: number, usuario: Usuario): Promise<Usuario> {
+    async update(id, usuario) {
         const client = await this.db.getClient();
-        
         try {
             await client.query('BEGIN');
-
             // Atualizar usuário
             const result = await client.query(`
                 UPDATE usuarios
@@ -149,7 +164,6 @@ export class UsuarioRepository {
                 usuario.dataNascimento,
                 id
             ]);
-
             // Atualizar endereço se existir
             if (usuario.endereco?.id) {
                 await client.query(`
@@ -168,74 +182,47 @@ export class UsuarioRepository {
                     usuario.endereco.id
                 ]);
             }
-
             await client.query('COMMIT');
-
             return this.mapRowToUsuario(result.rows[0]);
-        } catch (error) {
+        }
+        catch (error) {
             await client.query('ROLLBACK');
             throw error;
-        } finally {
+        }
+        finally {
             client.release();
         }
     }
-
-    async delete(id: number): Promise<boolean> {
+    async delete(id) {
         const result = await this.db.query('DELETE FROM usuarios WHERE id_cliente = $1', [id]);
         return (result.rowCount ?? 0) > 0;
     }
-
-    private mapRowToUsuario(row: any): Usuario {
-        const usuario = new Usuario(
-            row.id,
-            row.nome,
-            row.email,
-            row.senha,
-            row.cpf,
-            row.telefone,
-            row.tipo,
-            new Date(row.data_nascimento),
-            undefined,
-            new Date(row.criado_em),
-            new Date(row.atualizado_em)
-        );
-
+    mapRowToUsuario(row) {
+        const usuario = new models_1.Usuario(row.id, row.nome, row.email, row.senha, row.cpf, row.telefone, row.tipo, new Date(row.data_nascimento), undefined, new Date(row.criado_em), new Date(row.atualizado_em));
         if (row.rua) {
-            usuario.endereco = new Endereco(
-                row.endereco_id,
-                row.rua,
-                row.numero,
-                row.bairro,
-                row.complemento,
-                row.cidade,
-                row.estado,
-                row.cep
-            );
+            usuario.endereco = new models_1.Endereco(row.endereco_id, row.rua, row.numero, row.bairro, row.complemento, row.cidade, row.estado, row.cep);
         }
-
         return usuario;
     }
 }
-
-export class ProdutoRepository {
-    constructor(private db: Database) {}
-
-    async findAll(): Promise<Produto[]> {
-        const result = await this.db.query('SELECT *, id_produto AS id FROM produtos');
-        return result.rows.map((row: any) => this.mapRowToProduto(row));
+exports.UsuarioRepository = UsuarioRepository;
+class ProdutoRepository {
+    constructor(db) {
+        this.db = db;
     }
-
-    async findById(id: number): Promise<Produto | null> {
+    async findAll() {
+        const result = await this.db.query('SELECT *, id_produto AS id FROM produtos');
+        return result.rows.map((row) => this.mapRowToProduto(row));
+    }
+    async findById(id) {
         const result = await this.db.query('SELECT *, id_produto AS id FROM produtos WHERE id_produto = $1', [id]);
         return result.rows.length > 0 ? this.mapRowToProduto(result.rows[0]) : null;
     }
-
-    async findDisponiveis(): Promise<Produto[]> {
+    async findDisponiveis() {
         const result = await this.db.query('SELECT *, id_produto AS id FROM produtos WHERE disponivel = true');
-        return result.rows.map((row: any) => this.mapRowToProduto(row));
+        return result.rows.map((row) => this.mapRowToProduto(row));
     }
-
-    async create(produto: Produto): Promise<Produto> {
+    async create(produto) {
         const result = await this.db.query(`
             INSERT INTO produtos (nome, descricao, preco, categoria, disponivel, imagem_url)
             VALUES ($1, $2, $3, $4, $5, $6)
@@ -248,11 +235,9 @@ export class ProdutoRepository {
             produto.disponivel,
             produto.imagemUrl
         ]);
-
         return this.mapRowToProduto(result.rows[0]);
     }
-
-    async update(id: number, produto: Produto): Promise<Produto> {
+    async update(id, produto) {
         const result = await this.db.query(`
             UPDATE produtos
             SET nome = $1, descricao = $2, preco = $3, categoria = $4,
@@ -268,82 +253,63 @@ export class ProdutoRepository {
             produto.imagemUrl,
             id
         ]);
-
         return this.mapRowToProduto(result.rows[0]);
     }
-
-    async delete(id: number): Promise<boolean> {
+    async delete(id) {
         const result = await this.db.query('DELETE FROM produtos WHERE id_produto = $1', [id]);
         return (result.rowCount ?? 0) > 0;
     }
-
-    private mapRowToProduto(row: any): Produto {
+    mapRowToProduto(row) {
         const id = row.id ?? row.id_produto;
-        return new Produto(
-            id,
-            row.nome,
-            row.descricao,
-            Number(row.preco),
-            row.categoria,
-            row.disponivel,
-            row.imagem_url,
-            new Date(row.criado_em),
-            new Date(row.atualizado_em)
-        );
+        return new models_1.Produto(id, row.nome, row.descricao, Number(row.preco), row.categoria, row.disponivel, row.imagem_url, new Date(row.criado_em), new Date(row.atualizado_em));
     }
 }
-
-export class PedidoRepository {
-    constructor(private db: Database) {}
-
-    async findAll(): Promise<Pedido[]> {
+exports.ProdutoRepository = ProdutoRepository;
+class PedidoRepository {
+    constructor(db) {
+        this.db = db;
+    }
+    async findAll() {
         const pedidos = await this.db.query(`
             SELECT p.*, i.* FROM pedidos p
             LEFT JOIN itens_pedido i ON p.id_pedido = i.pedido_id
             ORDER BY p.id_pedido, i.id_item
         `);
-
         return this.agruparPedidosEItens(pedidos.rows);
     }
-
-    async findById(id: number): Promise<Pedido | null> {
+    async findById(id) {
         const result = await this.db.query(`
             SELECT p.*, i.* FROM pedidos p
             LEFT JOIN itens_pedido i ON p.id_pedido = i.pedido_id
             WHERE p.id_pedido = $1
             ORDER BY i.id_item
         `, [id]);
-
-        if (result.rows.length === 0) return null;
-
+        if (result.rows.length === 0)
+            return null;
         const [pedido] = this.agruparPedidosEItens(result.rows);
         return pedido;
     }
-
-    async findByUsuario(usuarioId: number): Promise<Pedido[]> {
+    async findByUsuario(usuarioId) {
         // Buscar email do usuário e procurar pedidos por cliente_email
         const userRes = await this.db.query('SELECT email FROM usuarios WHERE id_cliente = $1', [usuarioId]);
-        if (userRes.rows.length === 0) return [];
+        if (userRes.rows.length === 0)
+            return [];
         const email = userRes.rows[0].email;
-
         const result = await this.db.query(`
             SELECT p.*, i.* FROM pedidos p
             LEFT JOIN itens_pedido i ON p.id_pedido = i.pedido_id
             WHERE p.cliente_email = $1
             ORDER BY p.id_pedido, i.id_item
         `, [email]);
-
         const pedidos = this.agruparPedidosEItens(result.rows);
-        for (const p of pedidos) p.clienteId = usuarioId;
+        for (const p of pedidos)
+            p.clienteId = usuarioId;
         return pedidos;
     }
-
-    async create(pedido: Pedido): Promise<Pedido> {
+    async create(pedido) {
         const client = await this.db.getClient();
-        
         try {
             await client.query('BEGIN');
-
             // Criar pedido
             const pedidoResult = await client.query(`
                 INSERT INTO pedidos (
@@ -368,9 +334,7 @@ export class PedidoRepository {
                 pedido.observacoes,
                 pedido.promocoesAplicadas
             ]);
-
             const pedidoId = pedidoResult.rows[0].id_pedido;
-
             // Criar itens do pedido
             for (const item of pedido.itens) {
                 await client.query(`
@@ -393,117 +357,78 @@ export class PedidoRepository {
                     item.observacoes
                 ]);
             }
-
             await client.query('COMMIT');
-
-            return await this.findById(pedidoId) as Pedido;
-        } catch (error) {
+            return await this.findById(pedidoId);
+        }
+        catch (error) {
             await client.query('ROLLBACK');
             throw error;
-        } finally {
+        }
+        finally {
             client.release();
         }
     }
-
-    async update(id: number, pedido: Pedido): Promise<Pedido> {
+    async update(id, pedido) {
         const client = await this.db.getClient();
-        
         try {
             await client.query('BEGIN');
-
             // Atualizar pedido
             await client.query(`
                 UPDATE pedidos
                 SET status = $1, atualizado_em = CURRENT_TIMESTAMP
                 WHERE id_pedido = $2
             `, [pedido.status, id]);
-
             await client.query('COMMIT');
-
-            return await this.findById(id) as Pedido;
-        } catch (error) {
+            return await this.findById(id);
+        }
+        catch (error) {
             await client.query('ROLLBACK');
             throw error;
-        } finally {
+        }
+        finally {
             client.release();
         }
     }
-
-    private agruparPedidosEItens(rows: any[]): Pedido[] {
-        const pedidosMap = new Map<number, Pedido>();
-
+    agruparPedidosEItens(rows) {
+        const pedidosMap = new Map();
         for (const row of rows) {
             const pedidoKey = row.id_pedido ?? row.id;
             if (!pedidosMap.has(pedidoKey)) {
-                const pedido = new Pedido(
-                    pedidoKey,
-                    undefined,
-                    row.cliente_nome,
-                    row.cliente_email,
-                    row.cliente_telefone,
-                    row.tipo_entrega,
-                    row.endereco_entrega_id ? new Endereco(row.endereco_entrega_id) : undefined,
-                    [],
-                    Number(row.subtotal_original) || 0,
-                    Number(row.total_descontos) || 0,
-                    Number(row.total) || 0,
-                    row.status,
-                    row.forma_pagamento,
-                    row.observacoes,
-                    row.promocoes_aplicadas || [],
-                    new Date(row.criado_em),
-                    new Date(row.atualizado_em)
-                );
+                const pedido = new models_1.Pedido(pedidoKey, undefined, row.cliente_nome, row.cliente_email, row.cliente_telefone, row.tipo_entrega, row.endereco_entrega_id ? new models_1.Endereco(row.endereco_entrega_id) : undefined, [], Number(row.subtotal_original) || 0, Number(row.total_descontos) || 0, Number(row.total) || 0, row.status, row.forma_pagamento, row.observacoes, row.promocoes_aplicadas || [], new Date(row.criado_em), new Date(row.atualizado_em));
                 pedidosMap.set(pedidoKey, pedido);
             }
-
             if (row.id_item) {
-                const pedido = pedidosMap.get(pedidoKey)!;
-                const item = new ItemPedido(
-                    row.id_item,
-                    row.pedido_id,
-                    row.produto_id,
-                    row.nome_produto,
-                    row.quantidade,
-                    Number(row.preco_unitario) || 0,
-                    Number(row.preco_original) || 0,
-                    Number(row.desconto_aplicado) || 0,
-                    Number(row.subtotal) || 0,
-                    row.promocao_aplicada,
-                    row.observacoes
-                );
+                const pedido = pedidosMap.get(pedidoKey);
+                const item = new models_1.ItemPedido(row.id_item, row.pedido_id, row.produto_id, row.nome_produto, row.quantidade, Number(row.preco_unitario) || 0, Number(row.preco_original) || 0, Number(row.desconto_aplicado) || 0, Number(row.subtotal) || 0, row.promocao_aplicada, row.observacoes);
                 pedido.itens.push(item);
             }
         }
-
         return Array.from(pedidosMap.values());
     }
 }
-
-export class PromocaoRepository {
-    constructor(private db: Database) {}
-
-    async findAll(): Promise<Promocao[]> {
-        const result = await this.db.query('SELECT *, id_promocao AS id FROM promocoes');
-        return result.rows.map((row: any) => this.mapRowToPromocao(row));
+exports.PedidoRepository = PedidoRepository;
+class PromocaoRepository {
+    constructor(db) {
+        this.db = db;
     }
-
-    async findById(id: number): Promise<Promocao | null> {
+    async findAll() {
+        const result = await this.db.query('SELECT *, id_promocao AS id FROM promocoes');
+        return result.rows.map((row) => this.mapRowToPromocao(row));
+    }
+    async findById(id) {
         const result = await this.db.query('SELECT *, id_promocao AS id FROM promocoes WHERE id_promocao = $1', [id]);
         return result.rows.length > 0 ? this.mapRowToPromocao(result.rows[0]) : null;
     }
-
-    async findAtivas(): Promise<Promocao[]> {
+    async findAtivas() {
         const result = await this.db.query(`
             SELECT * FROM promocoes
             WHERE ativa = true
             AND (data_fim IS NULL OR data_fim > CURRENT_TIMESTAMP)
             AND data_inicio <= CURRENT_TIMESTAMP
         `);
-        return result.rows.map((row: any) => this.mapRowToPromocao(row));
+        return result.rows.map((row) => this.mapRowToPromocao(row));
     }
-
-    async create(promocao: Promocao): Promise<Promocao> {
+    async create(promocao) {
         const result = await this.db.query(`
             INSERT INTO promocoes (
                 nome, descricao, tipo_desconto, valor_desconto,
@@ -525,11 +450,9 @@ export class PromocaoRepository {
             promocao.dataInicio,
             promocao.dataFim
         ]);
-
         return this.mapRowToPromocao(result.rows[0]);
     }
-
-    async update(id: number, promocao: Promocao): Promise<Promocao> {
+    async update(id, promocao) {
         const result = await this.db.query(`
             UPDATE promocoes
             SET nome = $1, descricao = $2, tipo_desconto = $3,
@@ -552,30 +475,15 @@ export class PromocaoRepository {
             promocao.dataFim,
             id
         ]);
-
         return this.mapRowToPromocao(result.rows[0]);
     }
-
-    async delete(id: number): Promise<boolean> {
+    async delete(id) {
         const result = await this.db.query('DELETE FROM promocoes WHERE id_promocao = $1', [id]);
         return (result.rowCount ?? 0) > 0;
     }
-
-    private mapRowToPromocao(row: any): Promocao {
+    mapRowToPromocao(row) {
         const id = row.id ?? row.id_promocao;
-        return new Promocao(
-            id,
-            row.nome,
-            row.descricao,
-            row.tipo_desconto,
-            Number(row.valor_desconto),
-            row.dia_semana,
-            row.categoria_aplicavel,
-            row.produto_especifico,
-            row.valor_minimo_pedido,
-            row.ativa,
-            new Date(row.data_inicio),
-            row.data_fim ? new Date(row.data_fim) : undefined
-        );
+        return new models_1.Promocao(id, row.nome, row.descricao, row.tipo_desconto, Number(row.valor_desconto), row.dia_semana, row.categoria_aplicavel, row.produto_especifico, row.valor_minimo_pedido, row.ativa, new Date(row.data_inicio), row.data_fim ? new Date(row.data_fim) : undefined);
     }
 }
+exports.PromocaoRepository = PromocaoRepository;

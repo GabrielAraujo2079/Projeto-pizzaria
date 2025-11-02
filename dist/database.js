@@ -1,45 +1,30 @@
-import { Pool, PoolClient } from 'pg';
-
-export interface DatabaseConfig {
-    user: string;
-    host: string;
-    database: string;
-    password: string;
-    port: number;
-}
-
-export class Database {
-    private pool: Pool;
-    private static instance: Database;
-
-    private constructor(config: DatabaseConfig) {
-        this.pool = new Pool(config);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Database = void 0;
+const pg_1 = require("pg");
+class Database {
+    constructor(config) {
+        this.pool = new pg_1.Pool(config);
     }
-
-    static getInstance(config: DatabaseConfig): Database {
+    static getInstance(config) {
         if (!Database.instance) {
             Database.instance = new Database(config);
         }
         return Database.instance;
     }
-
-    async query(text: string, params?: any[]) {
+    async query(text, params) {
         return this.pool.query(text, params);
     }
-
-    async getClient(): Promise<PoolClient> {
+    async getClient() {
         return this.pool.connect();
     }
-
     async close() {
         await this.pool.end();
     }
-
     async inicializarTabelas() {
         const client = await this.getClient();
         try {
             await client.query('BEGIN');
-
             // Criar tabela de usuários
             await client.query(`
                 CREATE TABLE IF NOT EXISTS usuarios (
@@ -55,7 +40,6 @@ export class Database {
                     atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             `);
-
             // Criar tabela de endereços
             await client.query(`
                 CREATE TABLE IF NOT EXISTS enderecos (
@@ -73,7 +57,6 @@ export class Database {
                     atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             `);
-
             // Criar tabela de produtos
             await client.query(`
                 CREATE TABLE IF NOT EXISTS produtos (
@@ -89,7 +72,6 @@ export class Database {
                     atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             `);
-
             // Criar tabela de pedidos
             await client.query(`
                 CREATE TABLE IF NOT EXISTS pedidos (
@@ -104,7 +86,6 @@ export class Database {
                     atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             `);
-
             // Criar tabela de itens do pedido
             await client.query(`
                 CREATE TABLE IF NOT EXISTS itens_pedido (
@@ -118,7 +99,6 @@ export class Database {
                     atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             `);
-
             // Criar tabela de promoções
             await client.query(`
                 CREATE TABLE IF NOT EXISTS promocoes (
@@ -134,13 +114,15 @@ export class Database {
                     atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             `);
-
             await client.query('COMMIT');
-        } catch (error) {
+        }
+        catch (error) {
             await client.query('ROLLBACK');
             throw error;
-        } finally {
+        }
+        finally {
             client.release();
         }
     }
 }
+exports.Database = Database;
