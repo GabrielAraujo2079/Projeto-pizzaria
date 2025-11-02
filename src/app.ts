@@ -145,6 +145,19 @@ export class PizzariaApp {
         return await this.usuarioRepo.autenticar(email, senha);
     }
 
+    // Wrappers adicionais usados pela interface
+    async listarUsuarios(): Promise<Usuario[]> {
+        return await this.usuarioRepo.findAll();
+    }
+
+    async buscarUsuario(id: number): Promise<Usuario | null> {
+        return await this.buscarUsuarioPorId(id);
+    }
+
+    async removerUsuario(id: number): Promise<boolean> {
+        return await this.usuarioRepo.delete(id);
+    }
+
     // Métodos de Produto
     async cadastrarProduto(produto: Produto): Promise<Produto> {
         return await this.produtoRepo.create(produto);
