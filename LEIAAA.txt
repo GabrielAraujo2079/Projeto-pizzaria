@@ -1,0 +1,191 @@
+
+
+------
+Este documento descreve, de modo detalhado, a função de cada arquivo/folder principal no repositório e os passos e dependências necessárias para rodar o projeto desde o início em uma máquina nova.
+
+1) Estrutura principal do repositório e propósito de cada item
+-------------------------------------------------------------
+(arquivos listados com o caminho relativo ao root)
+
+- package.json
+  - Propósito: manifesto do projeto Node.js. Contém dependências (runtime e dev), scripts úteis (build, dev, watch, etc.).
+  - Observação: o script `dev` atualmente aponta para `src/index.ts` que não existe; para desenvolvimento use `npx ts-node src/main.ts` ou adicione um script novo.
+
+- tsconfig.json
+  - Propósito: configurações do compilador TypeScript (target, módulos, outDir, etc.).
+
+- readme.txt
+  - Propósito: documentação do projeto (instruções e descrição antiga). Pode atualizar para README.md mais detalhado.
+
+- .env
+  - Propósito: arquivo de variáveis de ambiente (ex.: configurações do banco). Não está commitado por padrão. Use para suas credenciais locais.
+
+- data/
+  - Propósito: pasta para arquivos de dados e notas fiscais.
+  - Observação: arquivos `.json` foram removidos (você migrou para PostgreSQL). A pasta `notas-fiscais/` contém arquivos TXT gerados (comprovantes).
+
+- src/
+  - Contém todo o código TypeScript da aplicação. Principais arquivos:
+
+  - src/app.ts
+    - Propósito: Classe `PizzariaApp` — camada de alto nível que instancia a `Database`, repositórios e serviços. Expõe métodos para operações (cadastrar usuário, criar pedido, gerar relatórios, etc.).
+    - Usa: `database.ts`, `repositores.ts`, `services.ts`, `models.ts`.
+
+  - src/main.ts
+    - Propósito: ponto de entrada simples que instancia `PizzariaApp` com configuração do DB e chama `inicializar()`; mantém processo ativo e trata SIGINT.
+    - Observação: configuração de DB está hardcoded no arquivo (host, port, user, pass, database) — idealmente mova para `.env`.
+
+  - src/database.ts
+    - Propósito: wrapper para `pg.Pool`. Implementa `Database.getInstance(config)` para singleton, métodos `query`, `getClient`, `close` e `inicializarTabelas()` que cria as tabelas SQL necessárias.
+    - Observação: `inicializarTabelas()` cria todas as tabelas (endereços, usuários, produtos, promocoes, pedidos, itens_pedido) automaticamente.
+
+  - src/models.ts
+    - Propósito: definições de classes/Tipos (Usuario, Produto, Pedido, ItemPedido, Promocao, Endereco, etc.). Essas classes contêm métodos utilitários (recalcular total, validar status, etc.).
+
+  - src/repositores.ts
+    - Propósito: implementação dos repositórios que acessam o banco (UsuarioRepository, ProdutoRepository, PedidoRepository, PromocaoRepository).
+    - Observação: oferece métodos como `findById`, `create`, `update`, `findAll`, além de consultas mais complexas (agrupar pedidos e itens).
+
+  - src/services.ts
+    - Propósito: regras de negócio (PedidoService, PromocaoService, RelatorioService, NotaFiscalService). Aqui ficam cálculos de descontos, aplicação de promoções e geração de relatórios/nota fiscal.
+
+  - src/server.ts
+    - Propósito: wrapper para iniciar a aplicação carregando `.env`. Atualmente importa `PizzariaApp` de `./app` e chama `app.inicializar()`.
+
+  - src/main.ts.bak
+    - Propósito: backup antigo do `main.ts` com código CLI mais extenso (pode ser usado para referência). Não é necessário para execução.
+
+2) Dependências (o que precisa instalar e por quê)
+-------------------------------------------------
+- Requisitos de sistema
+  - Node.js >= 16 (recomendado Node 18+)
+  - npm (ou yarn)
+  - PostgreSQL (servidor de banco de dados) — versão compatível (ex.: 12/13/14/15/16)
+
+- Dependências do projeto (runtime) — listadas em `package.json`:
+  - pg            -> driver PostgreSQL para Node.js (usado por `src/database.ts`).
+  - bcrypt        -> hashing de senhas (usado em `UsuarioRepository`).
+  - dotenv        -> carregar variáveis de ambiente do `.env` (usado em `src/server.ts`).
+  - prompt-sync   -> (se utilizado) para entrada no CLI (só se algum script CLI usar input). Pode não ser necessário em execução via servidor.
+
+- Dev dependencies (para desenvolvimento):
+  - typescript    -> compilador TS
+  - ts-node       -> executar TypeScript diretamente (útil para dev)
+  - nodemon       -> reiniciar automaticamente em dev (opcional)
+  - @types/*      -> tipos para Node/pg/prompt-sync/etc.
+
+3) Passo-a-passo para configurar & rodar do zero (Linux / WSL)
+--------------------------------------------------------------
+1. Clonar o repositório e entrar na pasta do projeto:
+
+   git clone <url-do-repo>
+   cd Projeto-pizzaria
+
+2. Instalar Node.js (se ainda não tiver). Recomendo Node 18+. No Ubuntu:
+
+   # exemplo com NodeSource
+   curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+   sudo apt-get install -y nodejs
+
+3. Instalar PostgreSQL (se ainda não tiver) e criar usuário/banco:
+
+   sudo apt-get install -y postgresql postgresql-contrib
+
+   # criar usuário e db (substitua "pizzariauser" e senha)
+   sudo -u postgres createuser -P pizzariauser
+   sudo -u postgres createdb -O pizzariauser pizzaria
+
+   # alternativa usando psql
+   sudo -u postgres psql -c "CREATE USER pizzariauser WITH PASSWORD 'senha';"
+   sudo -u postgres psql -c "CREATE DATABASE pizzaria OWNER pizzariauser;"
+
+4. Configurar variáveis de ambiente (criar `.env` na raiz) — exemplo:
+
+   # .env
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_NAME=pizzaria
+   DB_USER=pizzariauser
+   DB_PASSWORD=sua_senha
+
+   # Opcional
+   NODE_ENV=development
+
+5. Instalar dependências do projeto:
+
+   npm install
+
+6. Compilar o projeto (opcional) ou rodar em dev com ts-node:
+
+   # Para compilar
+   npm run build
+   # iniciar a versão compilada
+   node dist/index.js   # (verificar se há arquivo dist/index.js gerado/esperado)
+
+   # Recomendo rodar direto o main.ts em dev
+   npx ts-node src/main.ts
+
+   # ou, se preferir, adicione um script em package.json:
+   # "start:dev": "ts-node src/main.ts"
+   # e rode: npm run start:dev
+
+7. O próprio app cria as tabelas automaticamente quando `app.inicializar()` é chamado (veja `Database.inicializarTabelas()`). Assim, ao iniciar, as tabelas devem ser criadas no banco configurado.
+
+4) Observações e dicas (problemas comuns e como resolver)
+-------------------------------------------------------
+- Scripts no `package.json`:
+  - O script `dev` atualmente aponta para `src/index.ts` (que não existe). Para desenvolvimento, use `npx ts-node src/main.ts` ou atualize `package.json` para: `"dev": "ts-node src/main.ts"`.
+
+- Variáveis de configuração:
+  - A aplicação lê `.env` em `src/server.ts` via `dotenv`. No entanto `src/main.ts` usa um `DatabaseConfig` inline. Sugiro unificar e ler do `.env`.
+
+- Backups:
+  - Antes de modificar/limpar `data/` ou remover arquivos, faça backup. Você já removeu os .json neste workspace; se precisar preservar, restaure a partir de suas próprias cópias.
+
+- Testes e scripts adicionais:
+  - Não há testes automatizados neste repositório por enquanto. Sugiro adicionar 2-3 testes unitários básicos para `PedidoService` e `PromocaoService`.
+
+- Permissões do Postgres:
+  - Se a conexão falhar, verifique se o PostgreSQL está ouvindo em `localhost` e se o usuário/senha têm permissões.
+
+5) Comandos úteis resumidos
+---------------------------
+- Instalar dependências:
+
+```bash
+npm install
+```
+
+- Rodar em desenvolvimento (recomendado):
+
+```bash
+npx ts-node src/main.ts
+```
+
+- Compilar (build):
+
+```bash
+npm run build
+```
+
+- Criar DB e usuário Postgres (exemplo):
+
+```bash
+sudo -u postgres psql -c "CREATE USER pizzariauser WITH PASSWORD 'senha';"
+sudo -u postgres psql -c "CREATE DATABASE pizzaria OWNER pizzariauser;"
+```
+
+6) Pontos a melhorar (sugestões rápidas)
+---------------------------------------
+- Mover configurações do DB em `src/main.ts` para `.env` e centralizar leitura.
+- Corrigir scripts em `package.json` para apontar `src/main.ts` no `dev` script.
+- Adicionar um `README.md` explicando os endpoints/uso (se planeja ter API) ou como usar CLI.
+- Adicionar um script `npm run migrate` caso queira rodar migrations separadas (agora as tabelas são criadas por `inicializarTabelas`).
+
+---
+Se quiser, eu:
+- atualizo o `package.json` (corrigir `dev` script) e adiciono um `start:dev`;
+- adicionar um exemplo de `.env.example` com as variáveis necessárias;
+- criar um `README.md` mais formal com esses passos e comandos.
+
+Diga qual dessas ações você quer que eu faça agora (ex.: "criar .env.example" ou "atualizar package.json e adicionar start:dev" ou "gerar README.md").

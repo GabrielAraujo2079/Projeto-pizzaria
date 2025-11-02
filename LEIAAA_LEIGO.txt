@@ -1,0 +1,55 @@
+LEIAAA - VERSÃO SIMPLIFICADA (para iniciantes)
+Data: 2025-11-02
+
+Esse arquivo explica, em linguagem simples, o que existe neste projeto e como você pode colocar ele pra rodar no seu computador.
+
+1) O que tem na pasta do projeto?
+- package.json: lista de pacotes que o projeto usa (como instalar) e comandos prontos. Pense nisso como o 'guia de instalação'.
+- .env (não comitado): arquivo onde você coloca o endereço do banco e senha (coisas sensíveis).
+- src/: código do programa (escrito em TypeScript).
+- data/notas-fiscais/: arquivos de notas que o programa gera quando faz um pedido.
+
+2) Arquivos importantes em `src/` (em poucas palavras)
+- main.ts: é o arquivo que inicia o programa. Quando você quiser executar, é por aqui.
+- app.ts: conecta tudo (banco, repositórios, serviços). É o "cérebro" que expõe funções como criar pedido, cadastrar usuário, gerar relatório.
+- database.ts: cuida da conexão com o PostgreSQL e cria as tabelas automaticamente.
+- repositores.ts: funções que conversam com o banco (salvar usuário, buscar produto, etc.).
+- services.ts: regras de negócio (aplicar promoções, gerar nota fiscal e relatórios).
+- models.ts: estrutura dos objetos (como é um usuário, produto, pedido).
+
+3) O que eu preciso instalar no meu computador?
+- Node.js (recomendado versão 18+)
+- PostgreSQL (um banco de dados)
+
+4) Passo-a-passo rápido para colocar pra rodar (modo prático)
+1. Clone o repositório e entre na pasta:
+   git clone <repo-url>
+   cd Projeto-pizzaria
+
+2. Copie o modelo de variáveis de ambiente e edite:
+   cp .env.example .env
+   # abra .env e coloque o DB_USER e DB_PASSWORD corretos
+
+3. Instale as dependências do Node:
+   npm install
+
+4. Crie o banco no PostgreSQL (exemplo simples):
+   sudo -u postgres psql -c "CREATE USER pizzariauser WITH PASSWORD 'senha';"
+   sudo -u postgres psql -c "CREATE DATABASE pizzaria OWNER pizzariauser;"
+
+5. Rode o projeto (modo desenvolvimento):
+   npm run start:dev
+   # ou: npx ts-node src/main.ts
+
+Quando o projeto iniciar, ele cria as tabelas no banco automaticamente.
+
+5) Se algo der errado
+- Erro de conexão com o banco: verifique se o PostgreSQL está rodando e se as credenciais em `.env` estão corretas.
+- Erro de compilação TypeScript: rode `npx tsc --noEmit` para ver a lista de erros.
+
+6) Observações finais
+- Os arquivos JSON antigos foram removidos porque agora os dados ficam no banco.
+- Se quiser, instalo mais coisas (migrations, testes ou um README mais detalhado). Só pedir.
+
+---
+Salvei essa versão simples como `LEIAAA_LEIGO.txt` na raiz do projeto.

@@ -11,25 +11,30 @@
     "crud",
     "sistema"
   ],
-  "scripts": {
+    "scripts": {
     "clean": "rm -rf dist",
     "clean-data": "rm -rf data",
     "build": "npm run clean && tsc",
-    "dev": "ts-node src/index.ts",
+    "dev": "ts-node src/main.ts",
+    "start:dev": "ts-node src/main.ts",
     "start": "node dist/index.js",
     "watch": "tsc --watch",
-    "dev-watch": "nodemon --exec ts-node src/index.ts",
+    "dev-watch": "nodemon --exec ts-node src/main.ts",
     "backup-data": "cp -r data data_backup_$(date +%Y%m%d_%H%M%S) 2>/dev/null || echo 'Pasta data não existe ainda'",
     "init-data": "mkdir -p data && echo '[]' > data/usuarios.json && echo '[]' > data/produtos.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.3",
+    "pg": "^8.16.3",
     "prompt-sync": "^4.2.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
+    "@types/dotenv": "^6.1.1",
     "@types/node": "^22.18.4",
+    "@types/pg": "^8.15.6",
     "@types/prompt-sync": "^4.2.3",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
