@@ -1,0 +1,19 @@
+=== NOTA FISCAL / COMPROVANTE ===
+Pedido #: 3
+Cliente: pt
+Email: pt@gmail.com
+Telefone: 1313131313
+Data/Hora: 22/09/2025, 11:29:11
+Forma de pagamento: DINHEIRO
+
+Tipo: ENTREGA
+Endereço de entrega: 1, 3 - 13
+
+Itens:
+   1x Pizza Calabresa (Familia) / Pizza Doce de Banana - R$ 55.00
+   2x Refrigerante Coca-Cola 2L - R$ 24.00
+   3x Sorvete de Chocolate - R$ 45.00
+
+💰 Total: R$ 124.00
+──────────────────────────────────────────────────
+Obrigado pela preferência!

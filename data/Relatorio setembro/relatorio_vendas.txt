@@ -1,0 +1,16 @@
+=== RELATÓRIO DE VENDAS ===
+
+📅 Vendas por dia:
+   17/09/2025: 4 produtos | R$ 98.00 | Descontos: R$ NaN
+   22/09/2025: 6 produtos | R$ 124.00 | Descontos: R$ NaN
+
+🗓 Vendas por mês:
+   09/2025: 10 produtos | R$ 222.00 | Descontos: R$ NaN
+
+🎉 Promoções mais usadas:
+
+🔢 Total geral:
+   10 produtos vendidos
+   R$ 222.00 em vendas
+   R$ NaN em descontos concedidos
+   R$ NaN seria o total sem promoções
