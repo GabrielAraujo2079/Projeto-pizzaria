@@ -19,19 +19,15 @@ Sistema de gerenciamento de pizzaria utilizando Node.js, TypeScript e PostgreSQL
 ## Estrutura do Projeto
 
 ```
-data/
-dist/
-node_modules/
-src/
-.env
-LEIAAA.txt
-LEIAAA_LEIGO.txt
+data
+dist
+Docs
+node_modules
+src
+.gitignore
 package-lock.json
 package.json
-Pizzaria.exe
-PizzariaExecutavel.bat
 README.md
-readme.txt
 tsconfig.json
 ```
 
@@ -67,8 +63,8 @@ Versão mínima compatível: PostgreSQL 15
 ```bash
 docker run -d \
   --name pizzaria-postgres \
-  -e POSTGRES_USER=pizzariauser \
-  -e POSTGRES_PASSWORD=senha \
+  -e POSTGRES_USER=Seu User\
+  -e POSTGRES_PASSWORD=Sua senha \
   -e POSTGRES_DB=pizzaria \
   -p 5432:5432 \
   postgres:18
