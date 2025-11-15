@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Pizzaria - Unianchieta</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Tela de Login -->
+    <div id="loginScreen" class="screen active">
+        <div class="container">
+            <div class="card">
+                <div class="logo">
+                    <h1>🍕 Pizzaria System</h1>
+                    <p>Sistema de Gestão</p>
+                </div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required placeholder="seu@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Senha</label>
+                        <input type="password" id="loginPassword" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                    <button type="button" class="btn btn-secondary" onclick="showRegister()">Criar Conta</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Cadastro -->
+    <div id="registerScreen" class="screen">
+        <div class="container">
+            <div class="card">
+                <h2>Criar Nova Conta</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="regName">Nome Completo</label>
+                        <input type="text" id="regName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Email</label>
+                        <input type="email" id="regEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Senha</label>
+                        <input type="password" id="regPassword" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="regConfirmPassword">Confirmar Senha</label>
+                        <input type="password" id="regConfirmPassword" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                    <button type="button" class="btn btn-secondary" onclick="showLogin()">Voltar ao Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Principal -->
+    <div id="dashboardScreen" class="screen">
+        <nav class="navbar">
+            <div class="nav-brand">🍕 Pizzaria System</div>
+            <div class="nav-user">
+                <span id="userName"></span>
+                <button class="btn btn-sm" onclick="logout()">Sair</button>
+            </div>
+        </nav>
+
+        <div class="dashboard-container">
+            <aside class="sidebar">
+                <ul class="menu">
+                    <li><a href="#" onclick="showSection('produtos')" class="active">📦 Produtos</a></li>
+                    <li><a href="#" onclick="showSection('pedidos')">🛒 Pedidos</a></li>
+                    <li><a href="#" onclick="showSection('relatorios')">📊 Relatórios</a></li>
+                </ul>
+            </aside>
+
+            <main class="content">
+                <!-- Seção de Produtos -->
+                <section id="produtosSection" class="content-section active">
+                    <div class="section-header">
+                        <h2>Gerenciar Produtos</h2>
+                        <button class="btn btn-primary" onclick="showAddProduct()">+ Adicionar Produto</button>
+                    </div>
+                    
+                    <div id="addProductForm" class="form-card" style="display: none;">
+                        <h3>Novo Produto</h3>
+                        <form id="productForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="prodNome">Nome do Produto</label>
+                                    <input type="text" id="prodNome" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prodCategoria">Categoria</label>
+                                    <select id="prodCategoria" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="pizza">Pizza</option>
+                                        <option value="bebida">Bebida</option>
+                                        <option value="sobremesa">Sobremesa</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="prodPreco">Preço (R$)</label>
+                                    <input type="number" id="prodPreco" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prodEstoque">Estoque</label>
+                                    <input type="number" id="prodEstoque" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="prodDescricao">Descrição</label>
+                                <textarea id="prodDescricao" rows="3"></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Salvar Produto</button>
+                                <button type="button" class="btn btn-secondary" onclick="hideAddProduct()">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="products-grid" id="productsList">
+                        <!-- Produtos serão carregados aqui -->
+                    </div>
+                </section>
+
+                <!-- Seção de Pedidos -->
+                <section id="pedidosSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Gerenciar Pedidos</h2>
+                        <button class="btn btn-primary" onclick="showNewOrder()">+ Novo Pedido</button>
+                    </div>
+
+                    <div id="newOrderForm" class="form-card" style="display: none;">
+                        <h3>Novo Pedido</h3>
+                        <form id="orderForm">
+                            <div class="form-group">
+                                <label for="orderCliente">Nome do Cliente</label>
+                                <input type="text" id="orderCliente" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Produtos</label>
+                                <div id="orderProducts"></div>
+                                <button type="button" class="btn btn-sm" onclick="addProductToOrder()">+ Adicionar Produto</button>
+                            </div>
+                            <div class="form-group">
+                                <label>Total: R$ <span id="orderTotal">0.00</span></label>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Finalizar Pedido</button>
+                                <button type="button" class="btn btn-secondary" onclick="hideNewOrder()">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="orders-list" id="ordersList">
+                        <!-- Pedidos serão carregados aqui -->
+                    </div>
+                </section>
+
+                <!-- Seção de Relatórios -->
+                <section id="relatoriosSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Relatórios e Estatísticas</h2>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total de Vendas</h3>
+                            <p class="stat-value">R$ <span id="totalVendas">0.00</span></p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Pedidos Hoje</h3>
+                            <p class="stat-value"><span id="pedidosHoje">0</span></p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Produtos Cadastrados</h3>
+                            <p class="stat-value"><span id="totalProdutos">0</span></p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Ticket Médio</h3>
+                            <p class="stat-value">R$ <span id="ticketMedio">0.00</span></p>
+                        </div>
+                    </div>
+
+                    <div class="report-section">
+                        <h3>Relatório Detalhado</h3>
+                        <button class="btn btn-primary" onclick="generateReport()">Gerar Relatório PDF</button>
+                        <div id="reportContent"></div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
