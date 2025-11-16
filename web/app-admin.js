@@ -487,6 +487,36 @@ function editUsuario(id) {
     document.getElementById('editUserNome').value = usuario.nome;
     document.getElementById('editUserEmail').value = usuario.email;
     document.getElementById('editUserTelefone').value = usuario.telefone || '';
+    document.getElementById('editUserCpf').value = usuario.cpf || '';
+    // dataNascimento pode ser Date ou string
+    if (usuario.dataNascimento) {
+        const d = new Date(usuario.dataNascimento);
+        const iso = d.toISOString().slice(0,10);
+        document.getElementById('editUserDataNascimento').value = iso;
+    } else {
+        document.getElementById('editUserDataNascimento').value = '';
+    }
+    document.getElementById('editUserTipo').value = usuario.tipo || 'cliente';
+
+    if (usuario.endereco) {
+        document.getElementById('editUserEnderecoId').value = usuario.endereco.id || '';
+        document.getElementById('editUserRua').value = usuario.endereco.rua || '';
+        document.getElementById('editUserNumero').value = usuario.endereco.numero || '';
+        document.getElementById('editUserBairro').value = usuario.endereco.bairro || '';
+        document.getElementById('editUserComplemento').value = usuario.endereco.complemento || '';
+        document.getElementById('editUserCidade').value = usuario.endereco.cidade || '';
+        document.getElementById('editUserEstado').value = usuario.endereco.estado || '';
+        document.getElementById('editUserCep').value = usuario.endereco.cep || '';
+    } else {
+        document.getElementById('editUserEnderecoId').value = '';
+        document.getElementById('editUserRua').value = '';
+        document.getElementById('editUserNumero').value = '';
+        document.getElementById('editUserBairro').value = '';
+        document.getElementById('editUserComplemento').value = '';
+        document.getElementById('editUserCidade').value = '';
+        document.getElementById('editUserEstado').value = '';
+        document.getElementById('editUserCep').value = '';
+    }
     
     document.getElementById('editUserForm').style.display = 'block';
 }
@@ -499,10 +529,25 @@ async function handleEditUser(e) {
     e.preventDefault();
     
     const id = parseInt(document.getElementById('editUserID').value);
+    const enderecoId = document.getElementById('editUserEnderecoId').value;
     const usuario = {
         nome: document.getElementById('editUserNome').value,
         email: document.getElementById('editUserEmail').value,
-        telefone: document.getElementById('editUserTelefone').value
+        telefone: document.getElementById('editUserTelefone').value,
+        cpf: document.getElementById('editUserCpf').value,
+        dataNascimento: document.getElementById('editUserDataNascimento').value || undefined,
+        tipo: document.getElementById('editUserTipo').value || 'cliente',
+        senha: document.getElementById('editUserSenha').value || undefined,
+        endereco: {
+            id: enderecoId ? parseInt(enderecoId) : undefined,
+            rua: document.getElementById('editUserRua').value || '',
+            numero: document.getElementById('editUserNumero').value || '',
+            bairro: document.getElementById('editUserBairro').value || '',
+            complemento: document.getElementById('editUserComplemento').value || '',
+            cidade: document.getElementById('editUserCidade').value || '',
+            estado: document.getElementById('editUserEstado').value || '',
+            cep: document.getElementById('editUserCep').value || ''
+        }
     };
     
     try {

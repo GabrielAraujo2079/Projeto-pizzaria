@@ -29,7 +29,14 @@ export class UsuarioRepository {
     }
 
     async findByEmail(email: string): Promise<Usuario | null> {
-        const res = await this.db.query(`SELECT * FROM usuarios WHERE email = $1`, [email]);
+        const res = await this.db.query(`
+            SELECT u.*, a.id_endereco AS address_id, a.logradouro AS rua, a.numero, a.bairro,
+                   a.complemento, a.cidade, a.estado, a.cep
+            FROM usuarios u
+            LEFT JOIN enderecos a ON a.usuario_id = u.id_cliente AND a.principal = true
+            WHERE u.email = $1
+        `, [email]);
+
         return res.rows.length ? this.mapRowToUsuario(res.rows[0]) : null;
     }
 
@@ -74,13 +81,15 @@ export class UsuarioRepository {
         const client = await (this.db as any).getClient();
         try {
             await client.query('BEGIN');
+            console.log(`UsuarioRepository.update: id=${id}, enderecoProvided=${!!usuario.endereco}, enderecoId=${usuario.endereco && usuario.endereco.id}`);
             await client.query(`
-                UPDATE usuarios SET nome=$1, email=$2, cpf=$3, telefone=$4, tipo=$5, 
-                       data_nascimento=$6, atualizado_em=CURRENT_TIMESTAMP
-                WHERE id_cliente=$7
-            `, [usuario.nome, usuario.email, usuario.cpf, usuario.telefone, usuario.tipo, usuario.dataNascimento, id]);
+                UPDATE usuarios SET nome=$1, email=$2, cpf=$3, telefone=$4, tipo=$5,
+                       data_nascimento=$6, senha=COALESCE(NULLIF($7, ''), senha), atualizado_em=CURRENT_TIMESTAMP
+                WHERE id_cliente=$8
+            `, [usuario.nome, usuario.email, usuario.cpf, usuario.telefone, usuario.tipo, usuario.dataNascimento, usuario.senha || '', id]);
 
             if (usuario.endereco && usuario.endereco.id) {
+                console.log(`UsuarioRepository.update: updating existing endereco id=${usuario.endereco.id}`);
                 const complemento = usuario.endereco.complemento !== undefined && usuario.endereco.complemento !== null
                     ? usuario.endereco.complemento
                     : '';
@@ -95,6 +104,22 @@ export class UsuarioRepository {
                 `, [usuario.endereco.rua, usuario.endereco.numero, usuario.endereco.bairro,
                     complemento, usuario.endereco.cidade, usuario.endereco.estado,
                     cep, usuario.endereco.id]);
+            }
+            else if (usuario.endereco) {
+                console.log('UsuarioRepository.update: inserting new endereco for usuario id=', id);
+                // inserir novo endereço do usuário
+                const complemento = usuario.endereco.complemento !== undefined && usuario.endereco.complemento !== null
+                    ? usuario.endereco.complemento
+                    : '';
+                const cep = usuario.endereco.cep !== undefined && usuario.endereco.cep !== null
+                    ? usuario.endereco.cep
+                    : '';
+
+                await client.query(`
+                    INSERT INTO enderecos (usuario_id, logradouro, numero, bairro, complemento, cidade, estado, cep, principal)
+                    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,true)
+                `, [id, usuario.endereco.rua, usuario.endereco.numero, usuario.endereco.bairro,
+                    complemento, usuario.endereco.cidade, usuario.endereco.estado, cep]);
             }
 
             await client.query('COMMIT');

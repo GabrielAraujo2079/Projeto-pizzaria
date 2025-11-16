@@ -51,6 +51,72 @@ body {
     animation: slideUp 0.3s ease;
 }
 
+/* Registration page specific tweaks */
+#registerScreen .card {
+    max-width: 760px;
+    background: rgba(255,255,255,0.96);
+    color: var(--dark-text);
+    padding: 28px;
+    max-height: 82vh;
+    overflow-y: auto;
+}
+
+#registerScreen h2 {
+    margin-top: 0;
+    margin-bottom: 6px;
+    color: var(--primary-color);
+    font-size: 1.6em;
+}
+
+#registerScreen .form-group label {
+    color: #444;
+    font-weight: 600;
+}
+
+#registerScreen .form-group input,
+#registerScreen .form-group select,
+#registerScreen .form-group textarea {
+    padding: 12px 14px;
+    border-radius: 6px;
+    border: 1px solid #e6e6e6;
+    background: #fff;
+    font-size: 14px;
+}
+
+/* Make the register form two-column on wider screens */
+@media (min-width: 900px) {
+    #registerScreen .form-group {
+        display: block;
+    }
+    #registerScreen form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px 24px;
+        align-items: start;
+    }
+    #registerScreen form button.btn {
+        grid-column: 1 / -1;
+        width: 220px;
+        justify-self: center;
+    }
+}
+
+/* Improve primary button look for the registration page */
+.btn-primary {
+    background: linear-gradient(180deg, #111 0%, #222 100%);
+    color: #fff;
+    border-radius: 10px;
+    padding: 12px 22px;
+}
+
+.btn-secondary {
+    background: #9aa0a6;
+    color: #fff;
+}
+
+/* Slightly tighter spacing for long forms */
+.form-group { margin-bottom: 14px; }
+
 @keyframes slideUp {
     from {
         opacity: 0;
@@ -163,6 +229,8 @@ body {
     font-size: 1.5em;
     font-weight: bold;
     color: var(--primary-color);
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .nav-user {
@@ -508,6 +576,36 @@ body {
     flex-wrap: nowrap;
     justify-content: center;
 }
+
+/* Search row used across admin sections */
+.search-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.search-row input[type="text"], .search-row input[type="search"], .search-row input[type="email"] {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.search-row .btn {
+    min-width: 140px;
+    padding: 10px 14px;
+    width: auto; /* override global .btn width:100% in search rows */
+}
+
+.form-card input[type="text"], .form-card input[type="email"], .form-card input[type="date"], .form-card input[type="tel"], .form-card input[type="password"] {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+.form-card h3, .form-card h4 { color: var(--dark-text); }
 
 .btn-filter {
     padding: 10px 20px;

@@ -857,12 +857,25 @@ async function handleProfileUpdate(e) {
     };
     
     try {
+        // Se já houver um endereço salvo localmente, envie também o id do endereço para que o backend atualize em vez de inserir
+        if (currentUser && currentUser.endereco && currentUser.endereco.id) {
+            usuarioAtualizado.endereco.id = currentUser.endereco.id;
+        }
+
         const response = await apiRequest(`/usuarios/${currentUser.id}`, {
             method: 'PUT',
             body: JSON.stringify(usuarioAtualizado)
         });
-        
-        currentUser = { ...currentUser, ...response };
+
+        // O backend pode retornar diretamente o usuário ou um objeto { usuario }
+        const updatedUser = response.usuario ? response.usuario : response;
+
+        // Garantir que o endereco final esteja presente (fallback para o que enviamos)
+        if (!updatedUser.endereco) {
+            updatedUser.endereco = usuarioAtualizado.endereco;
+        }
+
+        currentUser = { ...currentUser, ...updatedUser };
         localStorage.setItem('pizzaria_user', JSON.stringify(currentUser));
         showAlert('Perfil atualizado com sucesso! ✅', 'success');
     } catch (error) {

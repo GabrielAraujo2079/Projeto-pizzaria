@@ -25,6 +25,9 @@
                         <input type="password" id="loginPassword" required placeholder="••••••••">
                     </div>
                     <button type="submit" class="btn btn-primary">Entrar</button>
+                    <div style="text-align:center; margin-top:12px;">
+                        <a href="/cliente" class="btn btn-secondary" style="display:inline-block; width:auto; padding:8px 14px;">Criar Conta</a>
+                    </div>
                 </form>
             </div>
         </div>
@@ -33,7 +36,7 @@
     <!-- Dashboard Admin -->
     <div id="dashboardScreen" class="screen">
         <nav class="navbar">
-            <div class="nav-brand">🍕 Admin Pizzaria</div>
+            <a href="/" class="nav-brand" title="Home">🍕 Admin Pizzaria</a>
             <div class="nav-user">
                 <span id="userName"></span>
                 <button class="btn btn-sm" onclick="logout()">Sair</button>
@@ -168,8 +171,8 @@
                         </form>
                     </div>
 
-                    <div style="display:flex; gap:10px; align-items:center; margin-bottom:12px;">
-                        <input id="orderSearch" type="text" placeholder="Pesquisar pedidos por nome, email ou ID" style="flex:1; padding:8px;">
+                    <div class="search-row">
+                        <input id="orderSearch" type="text" placeholder="Pesquisar pedidos por nome, email ou ID">
                         <button class="btn btn-secondary" onclick="searchPedidos()">Pesquisar</button>
                         <button class="btn" onclick="clearOrderSearch()">Limpar</button>
                     </div>
@@ -189,22 +192,85 @@
                         <h3>Editar Usuário</h3>
                         <form id="userForm" onsubmit="handleEditUser(event)">
                             <input type="hidden" id="editUserID">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="editUserNome">Nome</label>
-                                    <input type="text" id="editUserNome" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="editUserEmail">Email</label>
-                                    <input type="email" id="editUserEmail" required>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="editUserTelefone">Telefone</label>
-                                    <input type="text" id="editUserTelefone">
-                                </div>
-                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="editUserNome">Nome</label>
+                                                    <input type="text" id="editUserNome" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="editUserEmail">Email</label>
+                                                    <input type="email" id="editUserEmail" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="editUserCpf">CPF</label>
+                                                    <input type="text" id="editUserCpf">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="editUserDataNascimento">Data de Nascimento</label>
+                                                    <input type="date" id="editUserDataNascimento">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="editUserTelefone">Telefone</label>
+                                                    <input type="text" id="editUserTelefone">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="editUserTipo">Tipo</label>
+                                                    <select id="editUserTipo">
+                                                        <option value="cliente">Cliente</option>
+                                                        <option value="admin">Admin</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <hr style="margin:12px 0; border:none; border-top:1px solid rgba(0,0,0,0.06)">
+                                            <h4 style="margin-bottom:10px">Endereço</h4>
+                                            <input type="hidden" id="editUserEnderecoId">
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="editUserRua">Rua</label>
+                                                    <input type="text" id="editUserRua">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="editUserNumero">Número</label>
+                                                    <input type="text" id="editUserNumero">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="editUserBairro">Bairro</label>
+                                                    <input type="text" id="editUserBairro">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="editUserComplemento">Complemento</label>
+                                                    <input type="text" id="editUserComplemento">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="editUserCidade">Cidade</label>
+                                                    <input type="text" id="editUserCidade">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="editUserEstado">Estado</label>
+                                                    <input type="text" id="editUserEstado">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group" style="width:60%">
+                                                    <label for="editUserCep">CEP</label>
+                                                    <input type="text" id="editUserCep">
+                                                </div>
+                                                <div class="form-group" style="width:40%">
+                                                    <label for="editUserSenha">Senha (deixe em branco para manter)</label>
+                                                    <input type="password" id="editUserSenha">
+                                                </div>
+                                            </div>
                             <div class="form-actions">
                                 <button type="submit" class="btn btn-primary">Salvar Alterações</button>
                                 <button type="button" class="btn btn-secondary" onclick="hideEditUserForm()">Cancelar</button>
@@ -212,8 +278,8 @@
                         </form>
                     </div>
 
-                    <div style="display:flex; gap:10px; align-items:center; margin-bottom:12px;">
-                        <input id="userSearch" type="text" placeholder="Pesquisar usuários por nome, email ou ID" style="flex:1; padding:8px;">
+                    <div class="search-row">
+                        <input id="userSearch" type="text" placeholder="Pesquisar usuários por nome, email ou ID">
                         <button class="btn btn-secondary" onclick="searchUsuarios()">Pesquisar</button>
                         <button class="btn" onclick="clearUserSearch()">Limpar</button>
                     </div>
@@ -230,8 +296,8 @@
                         <button class="btn btn-primary" onclick="showAddPromotion()">+ Adicionar Promoção</button>
                     </div>
 
-                    <div style="display:flex; gap:10px; align-items:center; margin-bottom:12px;">
-                        <input id="promoSearch" type="text" placeholder="Pesquisar promoções por nome ou categoria" style="flex:1; padding:8px;">
+                    <div class="search-row">
+                        <input id="promoSearch" type="text" placeholder="Pesquisar promoções por nome ou categoria">
                         <button class="btn btn-secondary" onclick="searchPromocoes()">Pesquisar</button>
                         <button class="btn" onclick="clearPromoSearch()">Limpar</button>
                     </div>

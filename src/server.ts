@@ -392,20 +392,24 @@ server.delete('/api/usuarios/:id', async (req, res) => {
 server.put('/api/usuarios/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { nome, email, telefone, endereco } = req.body;
-        
+        const { nome, email, telefone, endereco, cpf, tipo, dataNascimento, senha } = req.body;
+
+        console.log(`PUT /api/usuarios/${id} - body:`, JSON.stringify(req.body));
+
+        const dataNasc = dataNascimento ? new Date(dataNascimento) : new Date();
+
         const usuarioAtualizado = new Usuario(
             parseInt(id),
             nome,
             email,
-            '',
-            '',
-            telefone,
-            'cliente',
-            new Date(),
+            senha || '',
+            cpf || '',
+            telefone || '',
+            tipo || 'cliente',
+            dataNasc,
             endereco
         );
-        
+
         const resultado = await pizzariaApp.atualizarUsuario(parseInt(id), usuarioAtualizado);
         res.json(resultado);
     } catch (error) {
