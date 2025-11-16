@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizzaria - Faça seu Pedido</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Tela de Login Cliente -->
+    <div id="loginScreen" class="screen active">
+        <div class="container">
+            <div class="card">
+                <div class="logo">
+                    <h1>🍕 Pizzaria</h1>
+                    <p>Faça seu pedido online</p>
+                </div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required placeholder="seu@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Senha</label>
+                        <input type="password" id="loginPassword" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                    <button type="button" class="btn btn-secondary" onclick="showRegister()">Criar Conta</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Cadastro Cliente -->
+    <div id="registerScreen" class="screen">
+        <div class="container">
+            <div class="card">
+                <h2>Criar Nova Conta</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="regName">Nome Completo</label>
+                        <input type="text" id="regName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Email</label>
+                        <input type="email" id="regEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regCpf">CPF</label>
+                        <input type="text" id="regCpf" pattern="\d{11}" placeholder="Somente números" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regTelefone">Telefone</label>
+                        <input type="tel" id="regTelefone" placeholder="11999998888" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regDataNascimento">Data de Nascimento</label>
+                        <input type="date" id="regDataNascimento" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Senha</label>
+                        <input type="password" id="regPassword" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="regConfirmPassword">Confirmar Senha</label>
+                        <input type="password" id="regConfirmPassword" required minlength="6">
+                    </div>
+                    <hr>
+                    <h3>Endereço (opcional)</h3>
+                    <div class="form-group">
+                        <label for="regRua">Rua</label>
+                        <input type="text" id="regRua" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regNumero">Número</label>
+                        <input type="text" id="regNumero" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regComplemento">Complemento</label>
+                        <input type="text" id="regComplemento" placeholder="Apto, bloco, referência" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regBairro">Bairro</label>
+                        <input type="text" id="regBairro" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regCidade">Cidade</label>
+                        <input type="text" id="regCidade" value="Campinas">
+                    </div>
+                    <div class="form-group">
+                        <label for="regEstado">Estado</label>
+                        <input type="text" id="regEstado" value="SP">
+                    </div>
+                    <div class="form-group">
+                        <label for="regCep">CEP</label>
+                        <input type="text" id="regCep">
+                    </div>
+                    <div class="form-group">
+                        <label for="regTipo">Tipo de Usuário</label>
+                        <select id="regTipo" disabled>
+                            <option value="cliente" selected>Cliente</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                    <button type="button" class="btn btn-secondary" onclick="showLogin()">Voltar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Cliente -->
+    <div id="dashboardScreen" class="screen">
+        <nav class="navbar">
+            <div class="nav-brand">🍕 Pizzaria</div>
+            <div class="nav-user">
+                <span id="userName"></span>
+                <button class="btn btn-sm" onclick="logout()">Sair</button>
+            </div>
+        </nav>
+
+        <div class="dashboard-container">
+            <aside class="sidebar">
+                <ul class="menu">
+                    <li><a href="#" onclick="showSection('catalogo')" class="active">🍽️ Cardápio</a></li>
+                    <li><a href="#" onclick="showSection('carrinho')">🛒 Meu Carrinho</a></li>
+                    <li><a href="#" onclick="showSection('pedidos')">📋 Meus Pedidos</a></li>
+                    <li><a href="#" onclick="showSection('perfil')">👤 Meu Perfil</a></li>
+                </ul>
+            </aside>
+
+            <main class="content">
+                <!-- Seção de Cardápio -->
+                <section id="catalogoSection" class="content-section active">
+                    <div class="section-header">
+                        <h2>Cardápio</h2>
+                    </div>
+
+                    <div class="catalog-filters">
+                        <button class="btn btn-filter active" onclick="filterProducts('todos')">Todos</button>
+                        <button class="btn btn-filter" onclick="filterProducts('pizza')">🍕 Pizzas</button>
+                        <button class="btn btn-filter" onclick="filterProducts('bebida')">🥤 Bebidas</button>
+                        <button class="btn btn-filter" onclick="filterProducts('sobremesa')">🍰 Sobremesas</button>
+                    </div>
+
+                    <div id="promotionOfDay" class="promotion-of-day">
+                        <!-- Promoção do dia será carregada aqui -->
+                    </div>
+
+                    <div class="products-grid" id="productsList">
+                        <!-- Produtos serão carregados aqui -->
+                    </div>
+                </section>
+
+                <!-- Seção do Carrinho -->
+                <section id="carrinhoSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Meu Carrinho</h2>
+                    </div>
+
+                    <div class="cart-container">
+                        <div class="cart-items" id="cartItems">
+                            <!-- Itens do carrinho serão carregados aqui -->
+                        </div>
+
+                        <div class="cart-summary">
+                            <h3>Resumo</h3>
+                            <div class="summary-row">
+                                <span>Subtotal:</span>
+                                <span>R$ <span id="subtotal">0.00</span></span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Desconto:</span>
+                                <span>R$ <span id="discount">0.00</span></span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total:</span>
+                                <span>R$ <span id="cartTotal">0.00</span></span>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="proceedCheckout()">Finalizar Pedido</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seção de Pedidos -->
+                <section id="pedidosSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Meus Pedidos</h2>
+                    </div>
+
+                    <div class="orders-list" id="ordersList">
+                        <!-- Pedidos do cliente serão carregados aqui -->
+                    </div>
+                </section>
+
+                <!-- Seção de Perfil -->
+                <section id="perfilSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Meu Perfil</h2>
+                    </div>
+
+                    <div class="form-card">
+                        <form id="profileForm">
+                            <!-- Agrupamento em duas colunas para economizar espaço -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profNome">Nome Completo</label>
+                                    <input type="text" id="profNome" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profCpf">CPF</label>
+                                    <input type="text" id="profCpf" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profEmail">Email</label>
+                                    <input type="email" id="profEmail" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profTelefone">Telefone</label>
+                                    <input type="tel" id="profTelefone">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profDataNascimento">Data de Nascimento</label>
+                                    <input type="date" id="profDataNascimento" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profTipo">Tipo de Usuário</label>
+                                    <select id="profTipo" disabled>
+                                        <option value="cliente">Cliente</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profSenha">Senha</label>
+                                    <input type="password" id="profSenha" minlength="6">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profConfirmSenha">Confirmar Senha</label>
+                                    <input type="password" id="profConfirmSenha" minlength="6">
+                                </div>
+                            </div>
+
+                            <hr style="margin:18px 0; border:none; border-top:1px solid rgba(0,0,0,0.06)">
+                            <h3 style="margin-bottom:12px">Endereço</h3>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profRua">Rua</label>
+                                    <input type="text" id="profRua">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profNumero">Número</label>
+                                    <input type="text" id="profNumero">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profBairro">Bairro</label>
+                                    <input type="text" id="profBairro">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profComplemento">Complemento</label>
+                                    <input type="text" id="profComplemento" placeholder="Apto, bloco, referência">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profCidade">Cidade</label>
+                                    <input type="text" id="profCidade">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profEstado">Estado</label>
+                                    <input type="text" id="profEstado">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group" style="width:60%">
+                                    <label for="profCep">CEP</label>
+                                    <input type="text" id="profCep">
+                                </div>
+                                <div class="form-group" style="width:40%; align-self:end">
+                                    <button type="submit" class="btn btn-primary">Atualizar Perfil</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal de Checkout -->
+    <div id="checkoutModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Finalizar Pedido</h2>
+                <button type="button" class="modal-close" onclick="closeCheckout()">✕</button>
+            </div>
+            <form id="checkoutForm">
+                <div class="form-group">
+                    <label for="checkoutNome">Nome Completo</label>
+                    <input type="text" id="checkoutNome" required>
+                </div>
+                <div class="form-group">
+                    <label for="checkoutTelefone">Telefone</label>
+                    <input type="tel" id="checkoutTelefone" required>
+                </div>
+                <div class="form-group">
+                    <label for="checkoutEndereco">Endereço de Entrega</label>
+                    <input type="text" id="checkoutEndereco" required>
+                </div>
+                <div class="form-group">
+                    <label for="checkoutObs">Observações</label>
+                    <textarea id="checkoutObs" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="checkoutPagamento">Forma de Pagamento</label>
+                    <select id="checkoutPagamento" required>
+                        <option value="dinheiro">Dinheiro</option>
+                        <option value="pix">PIX</option>
+                        <option value="debito">Débito</option>
+                        <option value="credito">Crédito</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">Confirmar Pedido</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeCheckout()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app-cliente.js"></script>
+</body>
+</html>
