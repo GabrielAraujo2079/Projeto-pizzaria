@@ -177,27 +177,14 @@ Locais onde a configuração do banco está atualmente definida:
     const dbConfig = {
         host: 'localhost',
         port: 5432,
-        user: 'Paulo',
-        password: 'Piloto26',
+        user: 'Seu user',
+        password: 'Sua Senha',
         database: 'Pizzaria'
     };
     ```
 
 - `src/main.ts` (script de inicialização usado em alguns fluxos)
-
-    Exemplo de bloco presente no arquivo:
-
-    ```ts
-    const config = {
-        host: 'localhost',
-        port: 5432,
-        user: 'postgres',
-        password: '2079',
-        database: 'Pizzaria'
-    };
     ```
-
-Se preferir que o projeto leia variáveis de ambiente de um arquivo `.env`, siga a seção "Como migrar para .env" abaixo.
 
 Rodar o sistema
 
@@ -215,48 +202,6 @@ Páginas principais:
 - Cliente: http://localhost:3000/web/index-cliente.html
 - Administrador: http://localhost:3000/web/index-admin.html
 
-Como migrar para `.env` (opcional, recomendável)
-
-1. Adicione `dotenv` (já está no package.json). No topo de `src/config/server.ts` e `src/main.ts` adicione:
-
-```ts
-import dotenv from 'dotenv';
-dotenv.config();
-```
-
-2. Substitua os blocos de `dbConfig`/`config` por leitura das variáveis de ambiente, por exemplo:
-
-```ts
-const dbConfig = {
-    host: process.env.DB_HOST || 'localhost',
-    port: Number(process.env.DB_PORT || 5432),
-    user: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'Pizzaria'
-};
-```
-
-3. Crie um arquivo `.env` (ou `.env.local`) com os valores adequados ao seu ambiente. Exemplo do conteúdo mínimo (`.env.example`):
-
-```
-DB_USER=postgres
-DB_PASSWORD=2079
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=Pizzaria
-```
-
-4. Reinicie o servidor.
-
-Observação de segurança: evite comitar credenciais reais no repositório. Se já comitou credenciais, considere rotacioná-las e remover do histórico.
-
-Build apenas (compilar TypeScript):
-
-```bash
-npm run build
-```
-
----
 
 ## Credenciais Padrão
 
@@ -269,8 +214,9 @@ Administrador:
 
 # Banco de Dados Completo (copiar e colar)
 
+
 Apenas colar no pgAdmin, psql ou Docker.
-GitHub exibirá botão automático de copiar.
+Obs: Antes disso Crie o BD Pizzaria
 
 ---
 
