@@ -193,19 +193,19 @@ function renderProdutos() {
         const placeholder = encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='420' height='260'><rect width='100%' height='100%' fill='%23f0f0f0'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23808c8d' font-size='18'>Sem imagem</text></svg>`);
         const imgSrc = produto.imagemUrl ? produto.imagemUrl : `data:image/svg+xml;utf8,${placeholder}`;
         card.innerHTML = `
-            <div style="width:100%; height:220px; overflow:hidden; display:flex; align-items:center; justify-content:center; margin-bottom:16px; border-radius:8px; background:#f5f5f5;">
-                <img src="${imgSrc}" alt="${produto.nome}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+            <div style="width:100%; height:140px; overflow:hidden; display:flex; align-items:center; justify-content:center; margin-bottom:12px; border-radius:8px; background:#f5f5f5;">
+                <img src="${imgSrc}" alt="${produto.nome}" style="width:100%; height:100%; object-fit:contain; border-radius:8px;">
             </div>
-            <h3 style="margin-bottom:8px; font-size:18px; min-height:28px;">${produto.nome}</h3>
+            <h3 style="margin-bottom:6px; font-size:16px; min-height:22px;">${produto.nome}</h3>
             <div class="product-info" style="flex-grow:1;">
-                <span style="font-size:13px;">📂 ${produto.categoria}</span>
-                <span style="font-size:13px; margin-top:6px;">${produto.disponivel ? '✅ Disponível' : '❌ Indisponível'}</span>
+                <span style="font-size:12px;">📂 ${produto.categoria}</span>
+                <span style="font-size:12px; margin-top:4px;">${produto.disponivel ? '✅ Disponível' : '❌ Indisponível'}</span>
             </div>
-            <div class="product-price" style="margin:12px 0;">R$ ${produto.preco.toFixed(2)}</div>
-            <p style="color: #7f8c8d; font-size: 13px; line-height: 1.5; margin-bottom:16px; flex-grow:1;">${produto.descricao || 'Sem descrição'}</p>
+            <div class="product-price" style="margin:10px 0; font-size:1.3em;">R$ ${produto.preco.toFixed(2)}</div>
+            <p style="color: #7f8c8d; font-size: 12px; line-height: 1.4; margin-bottom:12px; flex-grow:1;">${produto.descricao || 'Sem descrição'}</p>
             <div class="product-actions">
-                <button class="btn btn-primary btn-sm" onclick="editProduct(${produto.id})" style="flex:1;">✏️ Editar</button>
-                <button class="btn btn-secondary btn-sm" onclick="deleteProduct(${produto.id})" style="flex:1;">🗑️ Excluir</button>
+                <button class="btn btn-primary btn-sm" onclick="editProduct(${produto.id})" style="flex:1; font-size:12px; padding:6px 8px;">✏️ Editar</button>
+                <button class="btn btn-secondary btn-sm" onclick="deleteProduct(${produto.id})" style="flex:1; font-size:12px; padding:6px 8px;">🗑️ Excluir</button>
             </div>
         `;
         container.appendChild(card);
