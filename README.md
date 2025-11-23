@@ -139,7 +139,81 @@ cd Projeto-pizzaria
 npm install
 ```
 
-Criar o arquivo `.env` (ou usar configuração local no server.ts):
+
+Configuração do banco de dados (observação importante)
+
+Observação: o código do projeto, na forma atual, contém configurações de conexão com o PostgreSQL definidas diretamente em arquivos de inicialização. O carregamento automático de um arquivo `.env` não está ativado por padrão — portanto, editar ou criar um `.env` sozinho não mudará a conexão a menos que você altere os arquivos de código para ler `process.env` (veja seção "Como migrar para .env" abaixo).
+
+Locais onde a configuração do banco está atualmente definida:
+
+- `src/config/server.ts` (usado pelo servidor em modo dev / ts-node)
+
+    Exemplo de bloco presente no arquivo (edite estes valores conforme seu ambiente):
+
+    ```ts
+    const dbConfig = {
+        host: 'localhost',
+        port: 5432,
+        user: 'Paulo',
+        password: 'Piloto26',
+        database: 'Pizzaria'
+    };
+    ```
+
+- `src/main.ts` (script de inicialização usado em alguns fluxos)
+
+    Exemplo de bloco presente no arquivo:
+
+    ```ts
+    const config = {
+        host: 'localhost',
+        port: 5432,
+        user: 'postgres',
+        password: '2079',
+        database: 'Pizzaria'
+    };
+    ```
+
+Se preferir que o projeto leia variáveis de ambiente de um arquivo `.env`, siga a seção "Como migrar para .env" abaixo.
+
+Rodar o sistema
+
+```bash
+npm install
+npm run build      # compila TypeScript para dist/
+npm start          # inicia a versão compilada (usa dist/config/server.js)
+# ou, em desenvolvimento (usa ts-node):
+npm run dev
+```
+
+Ao iniciar, o servidor ficará disponível em `http://localhost:3000`.
+
+Páginas principais:
+- Cliente: http://localhost:3000/web/index-cliente.html
+- Administrador: http://localhost:3000/web/index-admin.html
+
+Como migrar para `.env` (opcional, recomendável)
+
+1. Adicione `dotenv` (já está no package.json). No topo de `src/config/server.ts` e `src/main.ts` adicione:
+
+```ts
+import dotenv from 'dotenv';
+dotenv.config();
+```
+
+2. Substitua os blocos de `dbConfig`/`config` por leitura das variáveis de ambiente, por exemplo:
+
+```ts
+const dbConfig = {
+    host: process.env.DB_HOST || 'localhost',
+    port: Number(process.env.DB_PORT || 5432),
+    user: process.env.DB_USER || 'postgres',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'Pizzaria'
+};
+```
+
+3. Crie um arquivo `.env` (ou `.env.local`) com os valores adequados ao seu ambiente. Exemplo do conteúdo mínimo (`.env.example`):
 
 ```
 DB_USER=postgres
@@ -149,16 +223,9 @@ DB_PORT=5432
 DB_NAME=Pizzaria
 ```
 
-Rodar o sistema:
+4. Reinicie o servidor.
 
-```bash
-npm run build
-npm start
-```
-
-O servidor iniciará na porta 3000. Acesse:
-- Cliente: http://localhost:3000/web/index-cliente.html
-- Administrador: http://localhost:3000/web/index-admin.html
+Observação de segurança: evite comitar credenciais reais no repositório. Se já comitou credenciais, considere rotacioná-las e remover do histórico.
 
 Build apenas (compilar TypeScript):
 
