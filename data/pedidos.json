@@ -1,0 +1,95 @@
+[
+    {
+        "id": 1,
+        "clienteEmail": "d@",
+        "clienteNome": "D",
+        "clienteTelefone": "1193",
+        "itens": [
+            {
+                "produtoId": 1,
+                "nomeProduto": "Pizza Calabresa",
+                "quantidade": 1,
+                "precoUnitario": 39,
+                "subtotal": 39
+            },
+            {
+                "produtoId": 3,
+                "nomeProduto": "Refrigerante Coca-Cola 2L",
+                "quantidade": 1,
+                "precoUnitario": 12,
+                "subtotal": 12
+            }
+        ],
+        "total": 51,
+        "status": "pendente",
+        "dataHora": "2025-09-17T12:27:42.266Z",
+        "formaPagamento": "pix",
+        "observacoes": "Coca Gelada"
+    },
+    {
+        "id": 2,
+        "clienteEmail": "D2@",
+        "clienteNome": "D2",
+        "clienteTelefone": "1193",
+        "tipoEntrega": "entrega",
+        "enderecoEntrega": {
+            "rua": "Rua2",
+            "numero": "244",
+            "bairro": "Vila velha"
+        },
+        "itens": [
+            {
+                "produtoId": 2,
+                "nomeProduto": "Pizza Mussarela",
+                "quantidade": 1,
+                "precoUnitario": 35,
+                "subtotal": 35
+            },
+            {
+                "produtoId": 3,
+                "nomeProduto": "Refrigerante Coca-Cola 2L",
+                "quantidade": 1,
+                "precoUnitario": 12,
+                "subtotal": 12
+            }
+        ],
+        "total": 47,
+        "status": "pendente",
+        "dataHora": "2025-09-17T13:15:37.215Z",
+        "formaPagamento": "pix"
+    },
+    {
+        "id": 3,
+        "clienteEmail": "D@",
+        "clienteNome": "D",
+        "clienteTelefone": "1194",
+        "tipoEntrega": "retirada",
+        "itens": [
+            {
+                "produtoId": 2,
+                "nomeProduto": "Pizza Mussarela",
+                "quantidade": 3,
+                "precoUnitario": 35,
+                "subtotal": 105
+            },
+            {
+                "produtoId": 1,
+                "nomeProduto": "Pizza Calabresa",
+                "quantidade": 1,
+                "precoUnitario": 39,
+                "subtotal": 39
+            },
+            {
+                "produtoId": 3,
+                "nomeProduto": "Refrigerante Coca-Cola 2L",
+                "quantidade": 1,
+                "precoUnitario": 12,
+                "subtotal": 12
+            }
+        ],
+        "total": 156,
+        "status": "pendente",
+        "dataHora": "2025-09-19T17:17:16.828Z",
+        "formaPagamento": "debito"
+    }
+]

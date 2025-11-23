@@ -1,0 +1,52 @@
+[
+    {
+        "nome": "Paulo",
+        "senha": "$2b$10$nqHaveLUcqh85wko0Jtqxe3qarN657kgFEjDbvBklmkvE93QcI3hC",
+        "cpf": "777777777777",
+        "email": "Paulo@gmail.com",
+        "tipo": "admin",
+        "dataNascmto": "2005-03-26"
+    },
+    {
+        "nome": "D2",
+        "senha": "$2b$10$3zVwzC5eBxNTUuacnNiPfOA4XmX7uiPux9YRlv5IOezvevkSwZHFm",
+        "cpf": "7000000",
+        "email": "D2@",
+        "telefone": "1193",
+        "endereco": {
+            "rua": "Rua2",
+            "numero": "244",
+            "bairro": "Vila velha"
+        },
+        "tipo": "cliente",
+        "dataNascmto": "2005-03-26"
+    },
+    {
+        "nome": "D",
+        "senha": "$2b$10$4jzwog.HTZEr5Vc/YRPhju5ip8krFQVURiPRIiBe9CunwYeo9wzFK",
+        "cpf": "9000000000",
+        "email": "D@",
+        "telefone": "1194",
+        "endereco": {
+            "rua": "rua2",
+            "numero": "222",
+            "bairro": "bairo2"
+        },
+        "tipo": "cliente",
+        "dataNascmto": "2005-03-26"
+    },
+    {
+        "nome": "P",
+        "senha": "$2b$10$wafrX1kYidOzJB0XagSb7updggq1PNOJ/3xOGg3a.XCfN3jh93s/K",
+        "cpf": "1111111111",
+        "email": "p@",
+        "telefone": "1194",
+        "endereco": {
+            "rua": "ru2",
+            "numero": "232",
+            "bairro": "ba2"
+        },
+        "tipo": "cliente",
+        "dataNascmto": "2004-03-18"
+    }
+]

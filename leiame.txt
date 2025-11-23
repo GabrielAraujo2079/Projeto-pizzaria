@@ -1,0 +1,78 @@
+# 📄 Tutorial Estrutura do Projeto Pizzaria
+
+Este documento explica detalhadamente a função de cada pasta e arquivo dentro do projeto **PROJETO-PIZZARIA-MAIN**.
+
+------------------------------------------------------------
+📂 data
+------------------------------------------------------------
+Contém arquivos de dados e relatórios usados pelo sistema.
+
+  📂 notas-fiscais/
+    - Armazena as notas fiscais geradas para cada pedido.
+   
+
+  📂 Relatorio setembro/
+    - Contém relatórios mensais de vendas e informações.
+    -
+
+  - pedidos.json → Lista de pedidos realizados (em formato JSON).
+  - produtos.json → Cadastro de produtos (pizzas, bebidas, etc.).
+  - usuarios.json → Dados dos usuários/clientes cadastrados.
+
+------------------------------------------------------------
+📂 dist
+------------------------------------------------------------
+- Usado para armazenar os arquivos compilados/transpilados do TypeScript para JavaScript.
+
+------------------------------------------------------------
+📂 node_modules
+------------------------------------------------------------
+- Pasta automática gerada pelo **npm**, contendo todas as dependências instaladas do projeto.
+
+------------------------------------------------------------
+📂 src
+------------------------------------------------------------
+Pasta principal com o código-fonte do sistema.
+
+  📂 controllers
+    - Responsáveis por controlar as requisições e respostas da aplicação.
+    - AdminControllers.ts → Controla funções administrativas (gerenciar usuários, produtos, relatórios).
+    - ClienteControllers.ts → Controla funcionalidades relacionadas ao cliente (pedidos, cadastro).
+    - MenuControllers.ts → Gerencia o cardápio (produtos, categorias).
+
+  📂 models
+    - Define as estruturas e modelos de dados usados no sistema.
+    - index.ts → Arquivo central para exportar/importar os modelos.
+
+  📂 services
+    - Contém regras de negócio e manipulação de dados.
+    - DataServices.ts → Serviços gerais para manipulação de dados.
+    - Pedido.ts → Regras de negócio relacionadas a pedidos.
+    - Produto.ts → Regras relacionadas a produtos (cadastrar, editar, excluir).
+    - Usuario.ts → Regras relacionadas aos usuários (login, cadastro, validação).
+
+  📂 utils
+    - Funções utilitárias e auxiliares.
+    - FileUtils.ts → Funções para manipulação de arquivos (ler, salvar).
+    - promptUtils.ts → Utilidades para lidar com entrada de dados do usuário.
+    - validators.ts → Regras de validação (ex: validar email, senha, campos obrigatórios).
+
+  - main.ts → Arquivo principal da aplicação. Normalmente é o ponto de entrada do sistema.
+
+------------------------------------------------------------
+📂 raiz do projeto
+------------------------------------------------------------
+- package.json → Lista dependências e scripts do projeto.
+- package-lock.json → Versões exatas das dependências instaladas.
+- PizzariaEdu.exe → Executável do sistema (provavelmente versão compilada para Windows).
+- PizzariaEduEmBat.bat → Script em batch para rodar a aplicação no Windows.
+- readme.txt → Arquivo de instruções e descrição do projeto.
+- tsconfig.json → Configuração do compilador TypeScript.
+
+------------------------------------------------------------
+✅ Conclusão
+------------------------------------------------------------
+Esse tutorial serve como documentação básica da estrutura do projeto, explicando
+o propósito de cada pasta e arquivo. Com ele, novos desenvolvedores ou usuários
+conseguem entender rapidamente como o sistema está organizado e onde encontrar
+as funcionalidades específicas.
