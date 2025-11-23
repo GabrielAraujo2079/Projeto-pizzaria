@@ -212,7 +212,7 @@ Administrador:
 
 
 Apenas colar no pgAdmin, psql ou Docker.
-Obs: Antes disso Crie o BD Pizzaria
+<br>Obs: Antes disso Crie o BD Pizzaria
 
 ---
 
