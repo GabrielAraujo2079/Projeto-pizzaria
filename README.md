@@ -181,10 +181,6 @@ Locais onde a configuração do banco está atualmente definida:
         password: 'Sua Senha',
         database: 'Pizzaria'
     };
-    ```
-
-- `src/main.ts` (script de inicialização usado em alguns fluxos)
-    ```
 
 Rodar o sistema
 
