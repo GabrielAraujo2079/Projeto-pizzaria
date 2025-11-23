@@ -181,6 +181,8 @@ Locais onde a configuração do banco está atualmente definida:
         password: 'Sua Senha',
         database: 'Pizzaria'
     };
+    ```
+
 
 Rodar o sistema
 
