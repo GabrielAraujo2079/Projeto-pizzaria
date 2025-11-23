@@ -234,8 +234,13 @@ function renderProdutos() {
     }
 
 function showAddProduct() {
-    editingProductId = null;
-    document.getElementById('productForm').reset();
+    // Só reseta o formulário se não estiver editando
+    if (!editingProductId) {
+        document.getElementById('productForm').reset();
+        // Limpar o input de arquivo também
+        const fileEl = document.getElementById('prodImagem');
+        if (fileEl) fileEl.value = '';
+    }
     document.getElementById('addProductForm').style.display = 'block';
 }
 
@@ -264,7 +269,7 @@ async function handleAddProduct(e) {
                 body: JSON.stringify(produto)
             });
 
-            // Se houver imagem, enviar para endpoint de upload
+            // Se houver imagem, enviar para endpoint de upload (mantendo os outros dados intactos)
             if (file) {
                 const form = new FormData();
                 form.append('imagem', file);
@@ -275,6 +280,7 @@ async function handleAddProduct(e) {
             }
 
             showAlert('Produto atualizado com sucesso!', 'success');
+            editingProductId = null; // Limpar apenas após sucesso
         } else {
             // Criar produto primeiro
             const created = await apiRequest('/produtos', {
@@ -314,6 +320,10 @@ function editProduct(id) {
     document.getElementById('prodPreco').value = produto.preco;
     document.getElementById('prodDescricao').value = produto.descricao;
     document.getElementById('prodDisponivel').value = produto.disponivel;
+    
+    // Limpar o input de arquivo para permitir selecionar nova imagem
+    const fileEl = document.getElementById('prodImagem');
+    if (fileEl) fileEl.value = '';
     
     showAddProduct();
 }
