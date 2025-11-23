@@ -93,7 +93,12 @@
                 <section id="produtosSection" class="content-section">
                     <div class="section-header">
                         <h2>Gerenciar Produtos</h2>
-                        <button class="btn btn-primary" onclick="showAddProduct()">+ Adicionar Produto</button>
+                        <div style="display:flex; gap:12px; align-items:center;">
+                            <label style="display:flex; align-items:center; gap:8px; font-weight:600;">
+                                <input type="checkbox" id="showExcluded" onchange="loadProdutos()"> Mostrar produtos excluídos
+                            </label>
+                            <button class="btn btn-primary" onclick="showAddProduct()">+ Adicionar Produto</button>
+                        </div>
                     </div>
                     
                     <div id="addProductForm" class="form-card" style="display: none;">

@@ -252,9 +252,10 @@ function renderProdutos() {
     const container = document.getElementById('productsList');
     container.innerHTML = '';
     
-    const produtosFiltrados = filtroAtual === 'todos' 
-        ? produtos 
-        : produtos.filter(p => p.categoria === filtroAtual && p.disponivel);
+    // Sempre mostrar apenas produtos disponíveis para o cliente
+    const produtosFiltrados = produtos
+        .filter(p => p.disponivel)
+        .filter(p => filtroAtual === 'todos' ? true : p.categoria === filtroAtual);
     
     if (produtosFiltrados.length === 0) {
         container.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color: #7f8c8d;">Nenhum produto disponível nesta categoria.</p>';

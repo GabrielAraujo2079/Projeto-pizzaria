@@ -40,8 +40,19 @@ export class ProdutoRepository {
     }
 
     async delete(id: number): Promise<boolean> {
-        const res = await this.db.query('DELETE FROM produtos WHERE id_produto=$1', [id]);
-        return (res.rowCount ?? 0) > 0;
+        try {
+            const res = await this.db.query('DELETE FROM produtos WHERE id_produto=$1', [id]);
+            return (res.rowCount ?? 0) > 0;
+        } catch (err: any) {
+            // Tratamento para violações de integridade (ex: existe itens_pedido referenciando o produto)
+            // Código Postgres para foreign key violation: '23503'
+            if (err && (err.code === '23503' || String(err.message).toLowerCase().includes('foreign'))) {
+                // Em vez de excluir fisicamente, marcamos como indisponível (remoção lógica)
+                await this.db.query('UPDATE produtos SET disponivel = false, atualizado_em = CURRENT_TIMESTAMP WHERE id_produto = $1', [id]);
+                return true;
+            }
+            throw err;
+        }
     }
 
     private mapRowToProduto(row: any): Produto {

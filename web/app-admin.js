@@ -183,7 +183,11 @@ function renderProdutos() {
         return;
     }
     
-    produtos.forEach(produto => {
+    // Se o admin não marcou "Mostrar produtos excluídos", filtrar apenas disponiveis
+    const showExcluded = document.getElementById('showExcluded') && document.getElementById('showExcluded').checked;
+    const produtosParaMostrar = showExcluded ? produtos : produtos.filter(p => p.disponivel);
+
+    produtosParaMostrar.forEach(produto => {
         const card = document.createElement('div');
         card.className = 'product-card';
         const placeholder = encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='420' height='260'><rect width='100%' height='100%' fill='%23f0f0f0'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23808c8d' font-size='18'>Sem imagem</text></svg>`);
