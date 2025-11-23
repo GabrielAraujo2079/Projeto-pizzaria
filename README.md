@@ -263,6 +263,7 @@ npm run build
 Administrador:
 - Email: admin@pizzaria.com
 - Senha: admin123
+- CPF: 000.000.000-00
 
 ---
 
