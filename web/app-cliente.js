@@ -25,7 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
             console.error('Erro ao restaurar usuário do localStorage', err);
             localStorage.removeItem('pizzaria_user');
+            showPublicCatalog();
         }
+    } else {
+        // Mostrar catálogo público se não houver usuário
+        showPublicCatalog();
     }
 });
 
@@ -163,25 +167,38 @@ function logout() {
     currentUser = null;
     carrinho = [];
     try { localStorage.removeItem('pizzaria_user'); } catch (err) {}
-    showLogin();
+    showPublicCatalog();
 }
 
 // ============================================
 // GERENCIAMENTO DE TELAS
 // ============================================
 
+function showPublicCatalog() {
+    document.getElementById('publicCatalogScreen').classList.add('active');
+    document.getElementById('loginScreen').classList.remove('active');
+    document.getElementById('registerScreen').classList.remove('active');
+    document.getElementById('dashboardScreen').classList.remove('active');
+    // Carregar produtos públicos
+    loadPublicProdutos();
+}
+
 function showLogin() {
+    document.getElementById('publicCatalogScreen').classList.remove('active');
     document.getElementById('loginScreen').classList.add('active');
     document.getElementById('registerScreen').classList.remove('active');
     document.getElementById('dashboardScreen').classList.remove('active');
 }
 
 function showRegister() {
+    document.getElementById('publicCatalogScreen').classList.remove('active');
     document.getElementById('loginScreen').classList.remove('active');
     document.getElementById('registerScreen').classList.add('active');
+    document.getElementById('dashboardScreen').classList.remove('active');
 }
 
 function showDashboard() {
+    document.getElementById('publicCatalogScreen').classList.remove('active');
     document.getElementById('loginScreen').classList.remove('active');
     document.getElementById('registerScreen').classList.remove('active');
     document.getElementById('dashboardScreen').classList.add('active');
@@ -291,6 +308,109 @@ function filterProducts(categoria) {
     event.target.classList.add('active');
     
     renderProdutos();
+}
+
+// ============================================
+// CATÁLOGO PÚBLICO (sem login)
+// ============================================
+
+async function loadPublicProdutos() {
+    try {
+        produtos = await apiRequest('/produtos');
+        renderPublicProdutos();
+        await renderPromocaoDoDiaPublic();
+    } catch (error) {
+        console.log('Erro ao carregar produtos');
+    }
+}
+
+function renderPublicProdutos() {
+    const container = document.getElementById('publicProductsList');
+    container.innerHTML = '';
+    
+    // Sempre mostrar apenas produtos disponíveis para o cliente
+    const produtosFiltrados = produtos
+        .filter(p => p.disponivel)
+        .filter(p => filtroAtual === 'todos' ? true : p.categoria === filtroAtual);
+    
+    if (produtosFiltrados.length === 0) {
+        container.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color: #7f8c8d;">Nenhum produto disponível nesta categoria.</p>';
+        return;
+    }
+    
+    produtosFiltrados.forEach(produto => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        const placeholder = encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='420' height='260'><rect width='100%' height='100%' fill='%23f0f0f0'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23808c8d' font-size='18'>Sem imagem</text></svg>`);
+        const imgSrc = produto.imagemUrl ? produto.imagemUrl : `data:image/svg+xml;utf8,${placeholder}`;
+        card.innerHTML = `
+            <div style="width:100%; height:160px; overflow:hidden; display:flex; align-items:center; justify-content:center; margin-bottom:12px; border-radius:8px; background:#f5f5f5;">
+                <img src="${imgSrc}" alt="${produto.nome}" style="max-width:100%; max-height:160px; object-fit:contain; border-radius:8px;">
+            </div>
+            <h3>${produto.nome}</h3>
+            <p style="color: #7f8c8d; font-size: 14px; min-height: 40px;">${produto.descricao || 'Sem descrição'}</p>
+            <div class="product-price">R$ ${produto.preco.toFixed(2)}</div>
+            <button class="btn btn-primary btn-block" onclick="loginRequired()">
+                🛒 Adicionar ao Carrinho
+            </button>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function filterPublicProducts(categoria) {
+    filtroAtual = categoria;
+    
+    document.querySelectorAll('.btn-filter').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    renderPublicProdutos();
+}
+
+function loginRequired() {
+    showAlert('Para adicionar ao carrinho, você precisa fazer login primeiro!', 'warning');
+    showLogin();
+}
+
+async function renderPromocaoDoDiaPublic() {
+    const container = document.getElementById('promotionOfDayPublic');
+    
+    try {
+        // Chama endpoint específico que retorna promoções válidas para hoje
+        const promocoesHoje = await apiRequest('/promocoes/hoje');
+        const promocaoDia = Array.isArray(promocoesHoje) ? promocoesHoje[0] : null;
+
+        if (promocaoDia) {
+            // armazena promoção atual para cálculo no carrinho
+            currentPromotion = promocaoDia;
+            const desconto = promocaoDia.tipoDesconto === 'percentual'
+                ? `${promocaoDia.valorDesconto}%`
+                : `R$ ${parseFloat(promocaoDia.valorDesconto).toFixed(2)}`;
+
+            const categoriaTexto = {
+                'pizza': '🍕 Pizzas',
+                'bebida': '🥤 Bebidas',
+                'sobremesa': '🍰 Sobremesas',
+            };
+
+            container.innerHTML = `
+                <div style="background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); padding: 24px; border-radius: 12px; color: #333;">
+                    <h3 style="margin: 0 0 12px; font-size: 20px;">🎉 Promoção do Dia</h3>
+                    <p style="margin: 0 0 8px; font-size: 16px;">${promocaoDia.nome}</p>
+                    <p style="margin: 0 0 12px; font-size: 14px; opacity: 0.8;">${promocaoDia.descricao}</p>
+                    <div style="font-size: 28px; font-weight: bold; color: #ff0000; margin-bottom: 8px;">${desconto} OFF</div>
+                    <p style="margin: 0; font-size: 13px;">Válida para: ${categoriaTexto[promocaoDia.categoria] || 'Todos os Produtos'}</p>
+                </div>
+            `;
+        } else {
+            container.innerHTML = '';
+        }
+    } catch (err) {
+        console.log('Erro ao carregar promoção do dia');
+        container.innerHTML = '';
+    }
 }
 
 async function renderPromocaoDoDia() {

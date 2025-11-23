@@ -7,8 +7,44 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Tela de Cardápio Pública (sem login) -->
+    <div id="publicCatalogScreen" class="screen active">
+        <nav class="navbar">
+            <div class="nav-brand">🍕 Pizzaria</div>
+            <div class="nav-user">
+                <button class="btn btn-primary btn-sm" onclick="showLogin()">🔐 Fazer Login</button>
+            </div>
+        </nav>
+
+        <div class="dashboard-container">
+            <main class="content" style="width:100%; margin-left:0;">
+                <!-- Seção de Cardápio Pública -->
+                <section id="publicCatalogSection" class="content-section active">
+                    <div class="section-header">
+                        <h2>Cardápio</h2>
+                    </div>
+
+                    <div class="catalog-filters">
+                        <button class="btn btn-filter active" onclick="filterPublicProducts('todos')">Todos</button>
+                        <button class="btn btn-filter" onclick="filterPublicProducts('pizza')">🍕 Pizzas</button>
+                        <button class="btn btn-filter" onclick="filterPublicProducts('bebida')">🥤 Bebidas</button>
+                        <button class="btn btn-filter" onclick="filterPublicProducts('sobremesa')">🍰 Sobremesas</button>
+                    </div>
+
+                    <div id="promotionOfDayPublic" class="promotion-of-day">
+                        <!-- Promoção do dia será carregada aqui -->
+                    </div>
+
+                    <div class="products-grid" id="publicProductsList">
+                        <!-- Produtos serão carregados aqui -->
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
     <!-- Tela de Login Cliente -->
-    <div id="loginScreen" class="screen active">
+    <div id="loginScreen" class="screen">
         <div class="container">
             <div class="card">
                 <div class="logo">
@@ -102,7 +138,7 @@
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Cadastrar</button>
-                    <button type="button" class="btn btn-secondary" onclick="showLogin()">Voltar</button>
+                    <button type="button" class="btn btn-secondary" onclick="showPublicCatalog()">Voltar</button>
                 </form>
             </div>
         </div>
