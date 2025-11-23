@@ -633,12 +633,15 @@ Abaixo está o MER textual do banco de dados, representando entidades, atributos
 
 # Relacionamentos Principais
 
-Usuarios (1) —— (N) Enderecos  
-Usuarios (1) —— (N) Pedidos  
-Pedidos (1) —— (N) Itens_Pedido  
-Produtos (1) —— (N) Itens_Pedido  
-Promocoes (1) —— (N) Vendas  
-Pedidos (1) —— (1) Notas_Fiscais
+Usuarios (1) ──────── (N) Enderecos
+    │
+    └──────────────── (N) Pedidos
+                           │
+                           ├─────── (N) Itens_Pedido ──────── (N) Produtos
+                           │
+                           ├─────── (1) Notas_Fiscais
+                           │
+                           └─────── (1) Vendas ──────────── (N) Promocoes
 
 
 # Diagrama DER (Diagrama do Banco)
