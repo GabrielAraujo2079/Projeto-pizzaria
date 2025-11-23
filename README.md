@@ -52,42 +52,65 @@ Sistema de gerenciamento de pizzaria utilizando Node.js, TypeScript e PostgreSQL
 ## Estrutura do Projeto
 
 ```
-web/
-  app-admin.js
-  app-cliente.js
-  index-admin.html
-  index-cliente.html
-  styles.css
-src/
-  app.ts
-  interface.ts
-  main.ts
-  server.ts
-  config/
-    database.ts
-  database/
-    Database.ts
-    schema.sql
-  models/
-    index.ts
-  repositories/
-    index.ts
-    PedidoRepository.ts
-    ProdutoRepository.ts
-    PromocaoRepository.ts
-    UsuarioRepository.ts
-  services/
-    services.ts
-  types/
-    index.ts
-dist/
-Docs/
-node_modules
-.gitignore
-package-lock.json
-package.json
-README.md
-tsconfig.json
+Projeto-pizzaria/
+│
+├── 📂 web/                              # Camada de Apresentação (Frontend)
+│   ├── app-admin.js                     # Lógica da interface do administrador
+│   ├── app-cliente.js                   # Lógica da interface do cliente
+│   ├── index-admin.html                 # Página principal do admin
+│   ├── index-cliente.html               # Página principal do cliente
+│   └── styles.css                       # Estilos visuais do sistema
+│
+├── 📂 src/                              # Código-fonte principal (Backend)
+│   │
+│   ├── app.ts                           # Configuração principal da aplicação
+│   ├── main.ts                          # Ponto de entrada da aplicação
+│   ├── server.ts                        # Inicialização do servidor HTTP
+│   ├── interface.ts                     # Interfaces e tipos TypeScript
+│   │
+│   ├── 📂 config/                       # Configurações do sistema
+│   │   └── database.ts                  # Configuração da conexão PostgreSQL
+│   │
+│   ├── 📂 database/                     # Camada de Persistência
+│   │   ├── Database.ts                  # Classe de gerenciamento do banco
+│   │   └── schema.sql                   # Estrutura SQL completa do banco
+│   │
+│   ├── 📂 models/                       # Modelos de Dados (Entidades)
+│   │   └── index.ts                     # Exportação dos modelos
+│   │
+│   ├── 📂 repositories/                 # Camada de Acesso a Dados
+│   │   ├── index.ts                     # Exportação dos repositórios
+│   │   ├── PedidoRepository.ts          # Operações CRUD de Pedidos
+│   │   ├── ProdutoRepository.ts         # Operações CRUD de Produtos
+│   │   ├── PromocaoRepository.ts        # Operações CRUD de Promoções
+│   │   └── UsuarioRepository.ts         # Operações CRUD de Usuários
+│   │
+│   ├── 📂 services/                     # Camada de Negócio
+│   │   └── services.ts                  # Regras de negócio e lógica
+│   │
+│   └── 📂 types/                        # Tipos TypeScript Globais
+│       └── index.ts                     # Definições de tipos
+│
+├── 📂 dist/                             # Código compilado (TypeScript → JavaScript)
+│   └── [arquivos .js compilados]
+│
+├── 📂 Docs/                             # Documentação do Projeto
+│   ├── DER.png                          # Diagrama Entidade-Relacionamento
+│   ├── video-demonstracao.mp4           # Vídeo de demonstração
+│   └── documentacao-tecnica.pdf         # Especificação técnica
+│
+├── 📂 uploads/                          # Arquivos de mídia enviados
+│   └── [imagens de produtos]
+│
+├── 📂 node_modules/                     # Dependências instaladas pelo npm
+│   └── [bibliotecas externas]
+│
+├── 📄 .gitignore                        # Arquivos ignorados pelo Git
+├── 📄 .env                              # Variáveis de ambiente (não versionado)
+├── 📄 package.json                      # Metadados e dependências do projeto
+├── 📄 package-lock.json                 # Versões exatas das dependências
+├── 📄 tsconfig.json                     # Configuração do compilador TypeScript
+└── 📄 README.md                         # Instruções gerais do projeto
 ```
 
 ---
@@ -676,14 +699,18 @@ Abaixo está o MER textual do banco de dados, representando entidades, atributos
 - data_emissao
 
 # Relacionamentos Principais
+```
+Usuarios (1) ──────── (N) Enderecos
+    │
+    └──────────────── (N) Pedidos
+         │
+         ├─────── (N) Itens_Pedido ──────── (N) Produtos
+         │
+         ├─────── (1) Notas_Fiscais
+         │
+         └─────── (1) Vendas ──────────── (N) Promocoes
 
-Usuarios (1) —— (N) Enderecos  
-Usuarios (1) —— (N) Pedidos  
-Pedidos (1) —— (N) Itens_Pedido  
-Produtos (1) —— (N) Itens_Pedido  
-Promocoes (1) —— (N) Vendas  
-Pedidos (1) —— (1) Notas_Fiscais
-
+```
 
 # Diagrama DER (Diagrama do Banco)
 ![DER da Pizzaria](Docs/DerPizzaria.png)
