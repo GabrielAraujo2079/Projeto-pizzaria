@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - Pizzaria</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Tela de Login Admin -->
+    <div id="loginScreen" class="screen active">
+        <div class="container">
+            <div class="card">
+                <div class="logo">
+                    <h1>🍕 Admin Pizzaria</h1>
+                    <p>Painel de Controle</p>
+                </div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required placeholder="admin@pizzaria.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Senha</label>
+                        <input type="password" id="loginPassword" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                    <div style="text-align:center; margin-top:12px;">
+                        <a href="/cliente" class="btn btn-secondary" style="display:inline-block; width:auto; padding:8px 14px;">Criar Conta</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Admin -->
+    <div id="dashboardScreen" class="screen">
+        <nav class="navbar">
+            <a href="/" class="nav-brand" title="Home">🍕 Admin Pizzaria</a>
+            <div class="nav-user">
+                <span id="userName"></span>
+                <button class="btn btn-sm" onclick="logout()">Sair</button>
+            </div>
+        </nav>
+
+        <div class="dashboard-container">
+            <aside class="sidebar">
+                <ul class="menu">
+                    <li><a href="#" onclick="showSection('dashboard')" class="active">📊 Dashboard</a></li>
+                    <li><a href="#" onclick="showSection('produtos')">📦 Produtos</a></li>
+                    <li><a href="#" onclick="showSection('pedidos')">🛒 Pedidos</a></li>
+                    <li><a href="#" onclick="showSection('usuarios')">👥 Usuários</a></li>
+                    <li><a href="#" onclick="showSection('promocoes')">🎯 Promoções</a></li>
+                    <li><a href="#" onclick="showSection('relatorios')">📈 Relatórios</a></li>
+                </ul>
+            </aside>
+
+            <main class="content">
+                <!-- Dashboard Principal -->
+                <section id="dashboardSection" class="content-section active">
+                    <div class="section-header">
+                        <h2>Dashboard</h2>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total de Vendas</h3>
+                            <p class="stat-value">R$ <span id="totalVendas">0.00</span></p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Pedidos Hoje</h3>
+                            <p class="stat-value"><span id="pedidosHoje">0</span></p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Produtos Cadastrados</h3>
+                            <p class="stat-value"><span id="totalProdutos">0</span></p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Ticket Médio</h3>
+                            <p class="stat-value">R$ <span id="ticketMedio">0.00</span></p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Usuários Cadastrados</h3>
+                            <p class="stat-value"><span id="totalUsuarios">0</span></p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Pedidos Pendentes</h3>
+                            <p class="stat-value"><span id="pedidosPendentes">0</span></p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seção de Produtos -->
+                <section id="produtosSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Gerenciar Produtos</h2>
+                        <div style="display:flex; gap:12px; align-items:center;">
+                            <label style="display:flex; align-items:center; gap:8px; font-weight:600;">
+                                <input type="checkbox" id="showExcluded" onchange="loadProdutos()"> Mostrar produtos excluídos
+                            </label>
+                            <button class="btn btn-primary" onclick="showAddProduct()">+ Adicionar Produto</button>
+                        </div>
+                    </div>
+                    
+                    <div id="addProductForm" class="form-card" style="display: none;">
+                        <h3>Novo Produto</h3>
+                        <form id="productForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="prodNome">Nome do Produto</label>
+                                    <input type="text" id="prodNome" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prodCategoria">Categoria</label>
+                                    <select id="prodCategoria" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="pizza">Pizza</option>
+                                        <option value="bebida">Bebida</option>
+                                        <option value="sobremesa">Sobremesa</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="prodPreco">Preço (R$)</label>
+                                    <input type="number" id="prodPreco" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prodDisponivel">Disponível</label>
+                                    <select id="prodDisponivel">
+                                        <option value="true">Sim</option>
+                                        <option value="false">Não</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="prodDescricao">Descrição</label>
+                                <textarea id="prodDescricao" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="prodImagem">Imagem do Produto</label>
+                                <input type="file" id="prodImagem" accept="image/*">
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Salvar Produto</button>
+                                <button type="button" class="btn btn-secondary" onclick="hideAddProduct()">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="products-grid" id="productsList">
+                        <!-- Produtos serão carregados aqui -->
+                    </div>
+                </section>
+
+                <!-- Seção de Pedidos -->
+                <section id="pedidosSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Gerenciar Pedidos</h2>
+                    </div>
+
+                    <div id="editOrderStatusForm" class="form-card" style="display: none;">
+                        <h3>Editar Status do Pedido</h3>
+                        <form id="orderStatusForm" onsubmit="handleEditOrderStatus(event)">
+                            <input type="hidden" id="editOrderID">
+                            <div class="form-group">
+                                <label for="editOrderStatus">Novo Status</label>
+                                <select id="editOrderStatus" required>
+                                    <option value="">Selecione um status</option>
+                                    <option value="pendente">Pendente</option>
+                                    <option value="preparando">Preparando</option>
+                                    <option value="pronto">Pronto</option>
+                                    <option value="entregue">Entregue</option>
+                                    <option value="cancelado">Cancelado</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Atualizar Status</button>
+                                <button type="button" class="btn btn-secondary" onclick="hideEditOrderStatusForm()">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="search-row">
+                        <input id="orderSearch" type="text" placeholder="Pesquisar pedidos por nome, email ou ID">
+                        <button class="btn btn-secondary" onclick="searchPedidos()">Pesquisar</button>
+                        <button class="btn" onclick="clearOrderSearch()">Limpar</button>
+                    </div>
+
+                    <div class="orders-list" id="ordersList">
+                        <!-- Pedidos serão carregados aqui -->
+                    </div>
+                </section>
+
+                <!-- Seção de Usuários -->
+                <section id="usuariosSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Gerenciar Usuários</h2>
+                    </div>
+
+                    <div id="editUserForm" class="form-card" style="display: none;">
+                        <h3>Editar Usuário</h3>
+                        <form id="userForm" onsubmit="handleEditUser(event)">
+                            <input type="hidden" id="editUserID">
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="editUserNome">Nome</label>
+                                                    <input type="text" id="editUserNome" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="editUserEmail">Email</label>
+                                                    <input type="email" id="editUserEmail" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="editUserCpf">CPF</label>
+                                                    <input type="text" id="editUserCpf">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="editUserDataNascimento">Data de Nascimento</label>
+                                                    <input type="date" id="editUserDataNascimento">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="editUserTelefone">Telefone</label>
+                                                    <input type="text" id="editUserTelefone">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="editUserTipo">Tipo</label>
+                                                    <select id="editUserTipo">
+                                                        <option value="cliente">Cliente</option>
+                                                        <option value="admin">Admin</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <hr style="margin:12px 0; border:none; border-top:1px solid rgba(0,0,0,0.06)">
+                                            <h4 style="margin-bottom:10px">Endereço</h4>
+                                            <input type="hidden" id="editUserEnderecoId">
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="editUserRua">Rua</label>
+                                                    <input type="text" id="editUserRua">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="editUserNumero">Número</label>
+                                                    <input type="text" id="editUserNumero">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="editUserBairro">Bairro</label>
+                                                    <input type="text" id="editUserBairro">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="editUserComplemento">Complemento</label>
+                                                    <input type="text" id="editUserComplemento">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label for="editUserCidade">Cidade</label>
+                                                    <input type="text" id="editUserCidade">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="editUserEstado">Estado</label>
+                                                    <input type="text" id="editUserEstado">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group" style="width:60%">
+                                                    <label for="editUserCep">CEP</label>
+                                                    <input type="text" id="editUserCep">
+                                                </div>
+                                                <div class="form-group" style="width:40%">
+                                                    <label for="editUserSenha">Senha (deixe em branco para manter)</label>
+                                                    <input type="password" id="editUserSenha">
+                                                </div>
+                                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                                <button type="button" class="btn btn-secondary" onclick="hideEditUserForm()">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="search-row">
+                        <input id="userSearch" type="text" placeholder="Pesquisar usuários por nome, email ou ID">
+                        <button class="btn btn-secondary" onclick="searchUsuarios()">Pesquisar</button>
+                        <button class="btn" onclick="clearUserSearch()">Limpar</button>
+                    </div>
+
+                    <div class="users-list" id="usersList">
+                        <!-- Usuários serão carregados aqui -->
+                    </div>
+                </section>
+
+                <!-- Seção de Promoções -->
+                <section id="promocoesSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Gerenciar Promoções</h2>
+                        <button class="btn btn-primary" onclick="showAddPromotion()">+ Adicionar Promoção</button>
+                    </div>
+
+                    <div class="search-row">
+                        <input id="promoSearch" type="text" placeholder="Pesquisar promoções por nome ou categoria">
+                        <button class="btn btn-secondary" onclick="searchPromocoes()">Pesquisar</button>
+                        <button class="btn" onclick="clearPromoSearch()">Limpar</button>
+                    </div>
+
+                    <div id="addPromotionForm" class="form-card" style="display: none;">
+                        <h3>Nova Promoção</h3>
+                        <form id="promotionForm">
+                            <div class="form-group">
+                                <label for="promNome">Nome</label>
+                                <input type="text" id="promNome" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="promDescricao">Descrição</label>
+                                <textarea id="promDescricao" rows="2"></textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="promTipo">Tipo de Desconto</label>
+                                    <select id="promTipo" required>
+                                        <option value="percentual">Percentual (%)</option>
+                                        <option value="valor_fixo">Valor Fixo (R$)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="promValor">Valor</label>
+                                    <input type="number" id="promValor" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="promDia">Dia da Semana</label>
+                                    <select id="promDia" required>
+                                        <option value="0">Domingo</option>
+                                        <option value="1">Segunda</option>
+                                        <option value="2">Terça</option>
+                                        <option value="3">Quarta</option>
+                                        <option value="4">Quinta</option>
+                                        <option value="5">Sexta</option>
+                                        <option value="6">Sábado</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="promCategoria">Categoria</label>
+                                    <select id="promCategoria" required>
+                                        <option value="todos">Todos</option>
+                                        <option value="pizza">Pizza</option>
+                                        <option value="bebida">Bebida</option>
+                                        <option value="sobremesa">Sobremesa</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Salvar Promoção</button>
+                                <button type="button" class="btn btn-secondary" onclick="hideAddPromotion()">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="promotions-list" id="promotionsList">
+                        <!-- Promoções serão carregadas aqui -->
+                    </div>
+                </section>
+
+                <!-- Seção de Relatórios -->
+                <section id="relatoriosSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Relatórios e Estatísticas</h2>
+                    </div>
+                    
+                    <div class="report-section">
+                        <h3>Relatório Detalhado</h3>
+                        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                            <button class="btn btn-primary" onclick="generateReport()">Gerar Relatório</button>
+                            <button class="btn btn-secondary" onclick="printReport()" id="printBtn" style="display: none;">🖨️ Imprimir</button>
+                            <button class="btn btn-secondary" onclick="downloadReport()" id="downloadBtn" style="display: none;">📥 Baixar PDF</button>
+                        </div>
+                        <div id="reportContent"></div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="app-admin.js"></script>
+</body>
+</html>
