@@ -14,7 +14,11 @@ Sistema de gerenciamento de pizzaria utilizando Node.js, TypeScript e PostgreSQL
 * Paulo André Silva de Lima — 2512630
 * Paulo Vitor Macieira Carvalho — 2508725
 
+# Video Do Projeto
+[![Vídeo](https://img.youtube.com/vi/pTRR0TvV3Bg/0.jpg)](https://youtu.be/pTRR0TvV3Bg)
+
 ---
+
 
 ## Funcionalidades Implementadas
 
@@ -660,6 +664,4 @@ Usuarios (1) ──────── (N) Enderecos
 # Diagrama DER (Diagrama do Banco)
 ![DER da Pizzaria](Docs/DerPizzaria.png)
 
-# Video Do Projeto
-[![Vídeo](https://img.youtube.com/vi/pTRR0TvV3Bg/0.jpg)](https://youtu.be/pTRR0TvV3Bg)
 
