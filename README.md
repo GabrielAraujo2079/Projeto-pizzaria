@@ -660,3 +660,6 @@ Usuarios (1) ──────── (N) Enderecos
 # Diagrama DER (Diagrama do Banco)
 ![DER da Pizzaria](Docs/DerPizzaria.png)
 
+# Video Do Projeto
+[![Vídeo](https://img.youtube.com/vi/pTRR0TvV3Bg/0.jpg)](https://youtu.be/pTRR0TvV3Bg)
+
