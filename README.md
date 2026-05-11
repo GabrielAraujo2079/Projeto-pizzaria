@@ -2,23 +2,9 @@
 
 # Projeto Pizzaria — Sistema de Gestão (TypeScript + PostgreSQL)
 
-Trabalho da disciplina P2 – UniAnchieta.
 Sistema de gerenciamento de pizzaria utilizando Node.js, TypeScript e PostgreSQL.
 
 ---
-
-## Integrantes
-
-* Gabriel Araujo Santos — 2508678
-* Leonardo da Graça Moraes — 2512238
-* Paulo André Silva de Lima — 2512630
-* Paulo Vitor Macieira Carvalho — 2508725
-
-# Video Do Projeto
-[![Vídeo](https://img.youtube.com/vi/pTRR0TvV3Bg/0.jpg)](https://youtu.be/pTRR0TvV3Bg)
-
----
-
 
 ## Funcionalidades Implementadas
 
