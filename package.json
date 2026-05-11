@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Sistema de Pizzaria com cadastro, login e CRUD de produtos - P1 do Prof Edu",
   "main": "dist/main.js",
-  "author": "Gabriel Araujo",
+  "author": "Paulo André",
   "license": "ISC",
   "keywords": [
     "pizzaria",
