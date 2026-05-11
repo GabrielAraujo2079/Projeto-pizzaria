@@ -3,6 +3,7 @@
 # Projeto Pizzaria — Sistema de Gestão (TypeScript + PostgreSQL)
 
 Sistema de gerenciamento de pizzaria utilizando Node.js, TypeScript e PostgreSQL.
+Desenvolvido por Paulo André Silva de Lima.
 
 ---
 
@@ -97,6 +98,122 @@ Projeto-pizzaria/
 │
 ├── 📄 .gitignore                        # Arquivos ignorados pelo Git
 ├── 📄 .env                              # Variáveis de ambiente (não versionado)
+
+├── 📄 package.json                      # Configuração do projeto Node.js
+├── 📄 tsconfig.json                     # Configuração do TypeScript
+└── 📄 README.md                         # Este arquivo
+```
+
+---
+
+## Tecnologias Utilizadas
+
+- **Backend**: Node.js, TypeScript, Express.js
+- **Banco de Dados**: PostgreSQL
+- **Autenticação**: bcrypt
+- **Upload de Arquivos**: multer
+- **Outros**: dotenv, pg (driver PostgreSQL), prompt-sync, readline
+
+---
+
+## Pré-requisitos
+
+Antes de executar o projeto, certifique-se de ter instalado:
+
+- [Node.js](https://nodejs.org/) (versão 16 ou superior)
+- [PostgreSQL](https://www.postgresql.org/) (versão 12 ou superior)
+- [Git](https://git-scm.com/) (para clonar o repositório)
+
+---
+
+## Instalação
+
+1. **Clone o repositório**:
+   ```bash
+   git clone <url-do-repositorio>
+   cd Projeto-pizzaria
+   ```
+
+2. **Instale as dependências**:
+   ```bash
+   npm install
+   ```
+
+3. **Configure o banco de dados**:
+   - Crie um banco de dados PostgreSQL.
+   - Execute o script `src/database/schema.sql` para criar as tabelas.
+   - Configure as variáveis de ambiente no arquivo `.env` (veja exemplo abaixo).
+
+4. **Arquivo .env**:
+   Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+   ```
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_NAME=nome_do_banco
+   DB_USER=seu_usuario
+   DB_PASSWORD=sua_senha
+   PORT=3000
+   JWT_SECRET=sua_chave_secreta
+   ```
+
+---
+
+## Como Usar
+
+### Desenvolvimento
+Para executar em modo de desenvolvimento (com hot-reload):
+```bash
+npm run dev
+```
+O servidor será iniciado na porta 3000 (ou conforme configurado no .env).
+
+### Produção
+Para compilar e executar em produção:
+```bash
+npm run build
+npm start
+```
+
+### Outros Comandos
+- `npm run watch`: Compila TypeScript em modo watch.
+- `npm run clean`: Remove a pasta `dist`.
+- `npm run db:init`: Inicializa o banco de dados (se aplicável).
+
+---
+
+## Estrutura da API
+
+### Endpoints Principais
+- `POST /auth/login`: Login de usuário/admin
+- `POST /auth/register`: Cadastro de usuário
+- `GET /produtos`: Lista produtos
+- `POST /pedidos`: Criar pedido
+- `GET /pedidos/:id`: Detalhes do pedido
+- `GET /relatorios`: Gerar relatórios (admin)
+
+Para documentação completa, consulte a pasta `Docs/`.
+
+---
+
+## Contribuição
+
+1. Faça um fork do projeto.
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`).
+3. Commit suas mudanças (`git commit -am 'Adiciona nova feature'`).
+4. Push para a branch (`git push origin feature/nova-feature`).
+5. Abra um Pull Request.
+
+---
+
+## Licença
+
+Este projeto está sob a licença ISC. Veja o arquivo `LICENSE` para mais detalhes.
+
+---
+
+## Autor
+
+Desenvolvido por Paulo André Silva de Lima.
 ├── 📄 package.json                      # Metadados e dependências do projeto
 ├── 📄 package-lock.json                 # Versões exatas das dependências
 ├── 📄 tsconfig.json                     # Configuração do compilador TypeScript
